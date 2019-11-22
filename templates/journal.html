@@ -1,0 +1,69 @@
+<html lang="en">
+<link href="/static/css/journal.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
+<script language="javascript">
+    $(document).ready(function () {
+        console.log("Applying getValues() to document\n");
+        getValues();
+        });
+        function getValues() {
+                var rows = document.querySelectorAll(".table#row");
+                console.log(rows);
+                rows.forEach(function (currentRow) {
+                    /* Format date of each entry */
+                    var date = currentRow.querySelector('#date.date').innerHTML;
+                    var ds = date.split('-');
+                    currentRow.querySelector(".date").innerHTML = ds[1] + "/" + ds[2] + "/" + ds[0];
+
+                    /* Format time of each entry */
+                    var time = currentRow.querySelector('#time.time').innerHTML;
+                    var ts = time.split(":")
+                    var hours = Number(ts[0])
+                    var minutes = Number(ts[1])
+                    var ampm = hours >= 12 ? 'pm' : 'am';
+                    hours = hours % 12 - 5;
+                    hours = hours ? hours : 12; // the hour '0' should be '12'
+                    minutes = minutes < 10 ? '0'+ minutes : minutes;
+                    var strTime = hours + ':' + minutes + ' ' + ampm;
+
+                    currentRow.querySelector(".time").innerHTML = strTime;
+                    console.log(strTime);
+
+                    var notes = currentRow.querySelector(".notes");
+                    console.log("Notes: " + notes);
+                })
+        }
+</script>
+
+{% extends "layout.html" %}
+{% block title %}
+    Your Tea Journal
+{% endblock %}
+
+{% block main %}
+    <table class="table table-border log-table">
+    {% for log in logs %}
+    <tbody class="journal-entry">
+        <tr class="date-time-row">
+            <td id="date" class="date">{{ log['date'] }}</td>
+            <td id="time" class="time">{{ log['time'] }}</td>
+        </tr>
+        <tr class="tea-info-header">
+            <th>Brand</th>
+            <th>Name</th>
+            <th>Type</th>
+        </th>
+        <tr class="tea-info-row">
+            <td class="brand">{{ log['brand']}}</td>
+            <td class="name">{{ log['name']}}</td>
+            <td class="type">{{ log['type']}}</td>
+        </tr>
+        <tr class="row">
+            <td class="notes">{{ log['note']}} </td>
+        </tr>
+    </tbody>
+    {% endfor %}
+    </table>
+{% endblock %}
+</html>

@@ -1,0 +1,77 @@
+<html lang="en">
+<link href="/static/css/index.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script language="javascript">
+    $(document).ready(function () {
+        console.log("Applying getValues() to document\n")
+        getValues();
+    });
+    function getValues() {
+            var rows = document.querySelectorAll("#row");
+            console.log(rows);
+            rows.forEach(function (currentRow) {
+                console.log(currentRow);
+                var prep = currentRow.querySelector('.preparation').innerHTML;
+                var brand = currentRow.querySelector('.brand').innerHTML;
+                var name = currentRow.querySelector('.name').innerHTML;
+                var amt = currentRow.querySelector(".amount").innerHTML;
+                if (prep == "Loose Leaf" || prep == "Matcha Powder") {
+                    var amt_text = String(amt) + " ounces"
+                    console.log(amt_text)
+                    currentRow.querySelector(".amount").innerHTML = amt_text
+                } else if (prep == "Tea Bags"){
+                    var amt_text = String(amt) + " bags"
+                    console.log(amt_text)
+                    currentRow.querySelector(".amount").innerHTML = amt_text
+                }
+                /* Create button to decrement amount of tea by 1 cup. */
+                // currentRow.querySelector(".button-drink").addEventListener("click", function() {
+                //     if (prep == "Loose Leaf" || prep == "Matcha Powder") {
+                //         window.location = 'drink?brand=' + brand + '&name=' + name
+                //         // currentRow.querySelector(".amount").innerHTML = String(Number(amt).toFixed(2) - Number(1/6).toFixed(2)) + " ounces"
+                //     } else if (prep == "Tea Bags"){
+                //         // currentRow.querySelector(".amount").innerHTML = String(Number(amt) - 1) + " bags"
+                //     }
+                // });
+                // currentRow.querySelector(".button-sell").addEventListener("click", function() {
+                //     var symbol = $(this).data('symbol');
+                //     if (symbol != undefined && symbol != null) {
+                //         window.location = '/sell?symbol=' + symbol;
+                //     }
+                // });
+            });}
+</script>
+
+{% extends "layout.html" %}
+{% block title %}
+    Your Tea Collection
+{% endblock %}
+
+{% block main %}
+    <!--<b>Your current cash balance is {{ cash }}.</b>-->
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <td>Brand</td>
+                <td>Name</td>
+                <td>Type</td></td>
+                <td>Preparation</td>
+                <td>Amount</td>
+                <!--<td>Buy Stock</td>-->
+                <!--<td>Sell Stock</td>-->
+            </tr>
+        </thead>
+    {% for item in items %}
+        <tr id="row">
+            <td class="brand">{{ item['brand'] }}</td>
+            <td class="name">{{ item['name'] }}</td>
+            <td class="type">{{ item['type']}}</td>
+            <td class="preparation">{{ item['preparation']}}</td>
+            <td class="amount">{{ item['amount']}}</td>
+            <!--<td class="button-drink"><button class="buy-button" style="background-color:pink;width:100%">Drink A Cup</button></td>-->
+            <!--<td class="button-sell" data-symbol="{{ item['symbol'] }}"><button class="sell-button" style="background-color:#f5b82e;width:100%">Sell This Stock!</button></td>-->
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
+</html>

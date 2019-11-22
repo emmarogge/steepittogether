@@ -1,0 +1,58 @@
+
+<html lang="en">
+<link href="/static/css/utilities.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="/static/js/teatimer.js"></script>
+<link rel="shortcut icon"
+    href="{{ url_for('static', filename='img/teapot.png') }}">
+<script type="text/javascript">
+  $(document).ready(function () {
+      var tea_type = $("#teaTypeInput option:selected");
+      var steep_time = tea_type.data("time");
+      const countdown = new TeaTimer().setDuration(steep_time);
+      const label = document.querySelector('.time');
+
+      document.querySelector('.reset').addEventListener('click', () => {
+        countdown.reset($("#teaTypeInput option:selected").data("time"));
+        label.innerHTML = format_timer(Math.ceil(countdown.getTimeLeft()));
+      });
+      document.querySelector('.start').addEventListener('click', () => {
+        countdown.start($("#teaTypeInput option:selected").data("time"));
+      });
+      countdown.onTick = (time) => {
+        label.innerHTML = format_timer(Math.ceil(time));
+      };
+      countdown.onCompleted = () => {
+        console.log('DONE');
+      }
+  });
+</script>
+{% extends "layout.html" %}
+{% block title %}
+    Black Tea
+{% endblock %}
+
+{% block main %}
+  <body>
+    <div id="teaTimerBox">
+        <h2> Timer </h2>
+        <label for="teaTypeInput">Tea Type</label>
+        <select class="form-control" id="teaTypeInput" name="type" placeholder="Select">
+            <option data-time="180" selected>Green</option>
+            <option data-time="300">Black</option>
+            <option data-time="300">Herbal</option>
+            <option data-time="180">White</option>
+            <option data-time="360">Rooibos</option>
+        </select>
+        <div id="countdown" style="padding:10px;margin:10px;"></div>
+          <div class="time"></div>
+          <div class="buttons">
+            <button class="start">Start</button>
+            <button class="reset">Reset</button>
+          </div>
+        </div>
+        <div id="teaReadyMessage"></div>
+    </div>
+  </body>
+{% endblock %}
+</html>

@@ -1,0 +1,10 @@
+#countdown {
+    width: 50%;
+    display: block;
+    color: black;
+    background-color: pink;
+}
+#teaTimerBox {
+    background: pink;
+    width: 75%;
+}

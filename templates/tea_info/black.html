@@ -1,0 +1,62 @@
+<html lang="en">
+<link href="/static/css/styles.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<scriptsrc="./static/js/teatimer.js"  type="text/javascript"></script>
+<script language="javascript">
+    window.onload = function () {
+    	var startButton = document.querySelector("#start");
+        startButton.onclick = function () {
+            var display = document.querySelector('#countdown'),
+            message = document.querySelector("#teaReadyMessage");
+            message.setAttribute("class", "teaReadyMessage_hide");
+            var timer = new TeaTimer(240);
+            timer.onTick(format(display)).start();
+
+        function format(display) {
+            return function (minutes, seconds) {
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                display.textContent = minutes + ':' + seconds;
+
+                if (display.textContent == "00:00"){
+                    message.textContent = "Your tea is finished steeping!";
+                    message.setAttribute("class", "teaReadyMessage_show");
+                } else {
+                    message.setAttribute("class", "teaReadyMessage_hide");
+                }
+            };
+        };
+    }
+    };
+</script>
+{% extends "layout.html" %}
+
+{% block title %}
+    Black Tea
+{% endblock %}
+
+{% block main %}
+    <body>
+        <h1> Black Tea</h1>
+        <!--<h2> About Black Tea</h2>-->
+        <!--<p> When you think of tea, black tea is probably what you think of.-->
+        <!--All black teas start with the oxidized leaf of the <i>Camellia sinensis</i> plant.-->
+        <!--These leaves can be brewed on their own (such as in an English Breakfast tea), or they can be used as a base for other flavors,-->
+        <!--as is the case for Earl Grey (with added oil of bergamot) or Chai (with added spices like cinnamon, cardamom, and cloves).</p>-->
+        <!--<p> Black teas are high in caffeine (~200 mg per serving), so best to enjoy in the morning; even if you don't notice, caffeine does interefere with sleep quality!</p>-->
+        <!--<h2> Brewing Instructions</h2>-->
+        <!--<p>Start heating up some water! Bring the water to a boil, then let it cool just to the point that it stops boiling. This minimizes the bitter flavors while maximizing the delicious ones! </p>-->
+        <!--<h3>Loose leaf</h3>-->
+        <!--<p>Using a strainer or tea filter, measure out about one tablespoon of tea per 8 ounces of water. Pour the hot water over and let steep for 4 minutes.</p>-->
+        <!--<h3>Bagged</h3>-->
+        <!--<p>Simply put your teabag (or two if you'd like a stronger cup!) into your drinking vessel of choice, then fill the cup with water and let steep for 4 minutes.</p>-->
+        <h2> Timer </h2>
+        <div class="tea-timer-box">
+            <button id="start" class="start-timer-button">Start!</button>
+            <span id="countdown" class="timer"></span>
+            <p id="teaReadyMessage"></p>
+        </div>
+        <p>In the mood for a <a href="index.html">different cup</a> of tea?</p>
+    </body>
+{% endblock %}
+</html>

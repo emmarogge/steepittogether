@@ -1,0 +1,73 @@
+<html lang="en">
+<link href="/static/css/input_tea.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    function teaPreparation() {
+        var teaPrepVal = document.getElementById("teaPrepInput").value;
+        if (teaPrepVal == "Loose Leaf" || teaPrepVal == "Matcha Powder") {
+            console.log("ounces");
+            document.getElementById("ouncesInputLabel").style.display = "block";
+            document.getElementById("amountInput").style.display = "block";
+            document.getElementById("bagsInputLabel").style.display = "none";
+        }
+        else if (teaPrepVal == "Tea Bags") {
+            console.log("tea bags");
+            document.getElementById("bagsInputLabel").style.display = "block";
+            document.getElementById("amountInput").style.display = "block";
+            document.getElementById("ouncesInputLabel").style.display = "none";
+
+        }
+        else {
+            document.getElementById("amountInput").style.display = "none";
+            document.getElementById("bagsInputLabel").style.display = "none";
+            document.getElementById("ouncesInputLabel").style.display = "none";
+        }
+    }
+</script>
+{% extends "layout.html" %}
+{% block title %} Add new teas to your collection. {% endblock %}
+{% block main %}
+<form action="/input_tea" method="post">
+    <div class="message"> {{ message }} </div>
+    <div class="form-group">
+        <label for="brandInput" required="required">Brand</label>
+        <input id="brandInput" autocomplete="off" autofocus class="form-control" name="brand" type="text">
+        <label for="nameInput" required="required">Name</label>
+        <input id="nameInput" autocomplete="off" autofocus class="form-control" name="name" type="text">
+    </div>
+    <div class="form-group">
+        <label for="teaTypeInput">Tea Type</label>
+        <select class="form-control" id="teaTypeInput" name="type" placeholder="Select" required="required">
+            <option value="" selected disabled>Select</option>
+            <option>Green</option>
+            <option>Black</option>
+            <option>Herbal</option>
+            <option>White</option>
+            <option>Rooibos</option>
+            <option>Other</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="teaPrepInput">Tea Preparation</label>
+        <select class="form-control" id="teaPrepInput" name="preparation" onchange="teaPreparation()" required="required">
+            <option value="" selected disabled>Select</option>
+            <option value="Loose Leaf">Loose Leaf</option>
+            <option value="Matcha Powder">Matcha Power</option>
+            <option value="Tea Bags">Tea Bag(s)</option>
+            <option value="Other">Other</option>
+        </select>
+        <label id="ouncesInputLabel" for="ouncesInput" style="display:none;">Ounces</label>
+        <label id="bagsInputLabel" for="teaBagsInput" style="display:none;">Number of Tea Bags</label>
+        <input id="amountInput" autocomplete="off" autofocus class="form-control" type="number" name="amount" style="display:none;">
+    </div>
+    <div class="form-group">
+        <label for="locInput">Where did you purchase this tea?</label>
+        <input id="locInput" autocomplete="off" autofocus class="form-control" name="location" type="text">
+        <label for="priceInput">Price</label>
+        <input id="priceInput" autocomplete="off" autofocus class="form-control" name="price" type="number" step="any">
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+{% endblock %}
+
+</html>
