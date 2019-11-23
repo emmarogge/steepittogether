@@ -11,6 +11,9 @@ from helpers import apology, login_required, coming_soon
 
 # Configure application
 app = Flask(__name__)
+app.config[“SQLALCHEMY_DATABASE_URI”] = “sqlite:///teatime.db”
+db = SQLAlchemy(app)
+
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
@@ -32,7 +35,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///teatime.db")
+# db = SQL("sqlite:///teatime.db")
 
 @app.route("/")
 @login_required
