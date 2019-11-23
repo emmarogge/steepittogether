@@ -1,0 +1,13 @@
+# Files to ignore #
+
+# Scripts for tunneling #
+script*
+
+# Py trash #
+__pycache__
+
+# Security information #
+*.pem
+
+# OS generated files #
+.DS_Store
