@@ -3,6 +3,11 @@
     color: black;
     background-color: #9099A2;
 }
+
+.time {
+	font-size: 500px;
+}
+
 #teaTimerBox {
     background: #9099A2;
     padding: 20px;

@@ -60,7 +60,6 @@ def input_tea():
         _type = request.form.get("type")
         _price = request.form.get("price")
         _location = request.form.get("location")
-        _photo = request.files['file']
         _notes = "" #TODO: Allow user to input notes!
 
         # Get current date and time
@@ -69,8 +68,8 @@ def input_tea():
         _date = datetime.strftime(now, "%m/%d/%Y")
         print("date: {} time {} \n".format(_date, _time))
 
-        transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount, price, location, notes, date, time) VALUES (:user_id, :name, :brand, :type, :preparation, :amount, :price, :location, :notes, :date, :time)", \
-            user_id=session["user_id"], name=_name, brand=_brand, type=_type, preparation=_preparation, amount=_amount, price=_price, location=_location, notes=_notes, date=_date, time=_time);
+        transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount, price, location, curr_date, curr_time) VALUES (:user_id, :name, :brand, :type, :preparation, :amount, :price, :location, :curr_date, :curr_time)", \
+            user_id=session["user_id"], name=_name, brand=_brand, type=_type, preparation=_preparation, amount=_amount, price=_price, location=_location, curr_date=_date, curr_time=_time);
 
         print("Transaction: {} \n".format(transaction_id))
 
@@ -88,7 +87,7 @@ def input_tea():
         return render_template("input_tea.html", message=_message)
 
     else:
-        return render_template("input_tea.html")
+        return render_template("input_tea.html", message="")
 
 
 @app.route("/log", methods=["GET", "POST"])
