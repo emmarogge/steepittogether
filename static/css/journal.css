@@ -9,18 +9,44 @@ Silver: #8e8e90
 Onyx: #49494b
 */
 
+.journal-photo-col {
+    width: 200px;
+    height: auto;
+    display: table-cell;
+}
+
+.journal-photo {
+    display: table-row;
+    height: 200px;
+    width: auto;
+    object-fit: cover;
+    object-position: center;
+    padding-left: 10px;
+    padding-right: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
 th {
     border: none !important;
-    outline: none;
+    /*outline: 1px solid;*/
+    height: min-content;
     padding: 0px 0px !important;
-    text-align: left;
+    margin: 0px 0px !important;
+    vertical-align: text-bottom;
 }
 
 td {
     border: none !important;
-    outline: none;
+    /*outline: 1px solid;*/
+    height: min-content;
     padding: 0px 0px !important;
-    text-align: left;
+    margin: 0px 0px !important;
+    vertical-align: top;
+}
+
+.journal-label {
+    width: 50px;
 }
 
 .row {
@@ -84,11 +110,5 @@ td {
     padding-top: 50px;
 }
 
-.journal-photo {
-    display: table-row;
-    height: 200px;
-    width: auto;
-    object-fit: cover;
-    object-position: center;
-}
+
 

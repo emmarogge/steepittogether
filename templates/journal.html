@@ -25,28 +25,34 @@
 {% block main %}
     <table class="table table-border log-table">
     {% for log in logs %}
-    <tbody class="journal-entry">
+    <thead>
         <tr class="date-time-row">
-            <td id="date" class="date">{{ log['date'] }}</td>
-            <td id="time" class="time">{{ log['time'] }}</td>
+            <th colspan="2" id="date" class="date">{{ log['date'] }}</th>
+            <th colspan="2" id="time" class="time">{{ log['time'] }}</th>
+            <th></th>
+        </tr>    
+    </thead>
+    <tbody class="journal-entry">
+        <tr>
+            <td class="journal-photo-col" rowspan="6" colspan="2">
+                <img class="journal-photo" src="{{ log['photopath'] }}"/>
+            </td>
         </tr>
-        <tr class="tea-info-header">
-            <th>Brand</th>
-            <th>Name</th>
-            <th>Type</th>
-        </th>
-        <tr class="tea-info-row">
+        <tr>
+            <th class="journal-label">Brand</th>
             <td class="brand">{{ log['brand']}}</td>
+        </tr>
+        <tr>
+            <th class="journal-label">Name</th> 
             <td class="name">{{ log['name']}}</td>
+        </tr>
+        <tr>
+            <th class="journal-label">Type</th>
             <td class="type">{{ log['type']}}</td>
         </tr>
-        <tr class="notes-header">
-            <th></th>
+        <tr class="journal-label">
             <th>Notes</th>
-        </tr>
-        <tr class="notes-row">
-            <td style="width:50%;"><img class="journal-photo" src="{{ log['photopath'] }}"/></td>
-            <td class="notes" style="width:50;">{{ log['note']}} </td>
+            <td class="notes">{{ log['note']}} </td>
         </tr>
     </tbody>
     {% endfor %}
