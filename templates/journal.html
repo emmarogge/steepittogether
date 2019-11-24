@@ -11,25 +11,6 @@
                 var rows = document.querySelectorAll(".table#row");
                 console.log(rows);
                 rows.forEach(function (currentRow) {
-                    /* Format date of each entry */
-                    var date = currentRow.querySelector('#date.date').innerHTML;
-                    var ds = date.split('-');
-                    currentRow.querySelector(".date").innerHTML = ds[1] + "/" + ds[2] + "/" + ds[0];
-
-                    /* Format time of each entry */
-                    var time = currentRow.querySelector('#time.time').innerHTML;
-                    var ts = time.split(":")
-                    var hours = Number(ts[0])
-                    var minutes = Number(ts[1])
-                    var ampm = hours >= 12 ? 'pm' : 'am';
-                    hours = hours % 12 - 5;
-                    hours = hours ? hours : 12; // the hour '0' should be '12'
-                    minutes = minutes < 10 ? '0'+ minutes : minutes;
-                    var strTime = hours + ':' + minutes + ' ' + ampm;
-
-                    currentRow.querySelector(".time").innerHTML = strTime;
-                    console.log(strTime);
-
                     var notes = currentRow.querySelector(".notes");
                     console.log("Notes: " + notes);
                 })
@@ -60,7 +41,8 @@
             <td class="type">{{ log['type']}}</td>
         </tr>
         <tr class="row">
-            <td class="notes">{{ log['note']}} </td>
+            <td class="notes" style="width:50%;">{{ log['note']}} </td>
+            <td class="photo" style="width:50%;"><img src="{{ log['photopath'] }}"/></td>
         </tr>
     </tbody>
     {% endfor %}

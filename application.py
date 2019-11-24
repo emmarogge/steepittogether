@@ -1,19 +1,26 @@
 import os
+import datetime
 
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
+from flask_wtf.file import FileField, FileRequired
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required, coming_soon
+from datetime import datetime
 
+# Env Vars
+UPLOAD_FOLDER = os.path.join('static', 'photos')
 
 # Configure application
 app = Flask(__name__)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config["IMAGE_UPLOADS"] = UPLOAD_FOLDER
+app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG"]
 
 # Ensure responses aren't cached
 @app.after_request
@@ -22,9 +29,6 @@ def after_request(response):
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
     return response
-
-# Custom filter
-# app.jinja_env.filters["usd"] = usd
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
@@ -56,13 +60,20 @@ def input_tea():
         _type = request.form.get("type")
         _price = request.form.get("price")
         _location = request.form.get("location")
-        _notes = ""
+        _photo = request.files['file']
+        _notes = "" #TODO: Allow user to input notes!
 
-        # Update transactions table to include this information.
-        db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount, price, location, notes) VALUES (:user_id, :name, :brand, :type, :preparation, :amount, :price, :location, :notes)", \
-        user_id=session["user_id"], name=_name, brand=_brand, type=_type, preparation=_preparation, amount=_amount, price=_price, location=_location, notes=_notes);
+        # Get current date and time
+        now = datetime.now()
+        _time = datetime.strftime(now, "%I:%M %p")
+        _date = datetime.strftime(now, "%m/%d/%Y")
+        print("date: {} time {} \n".format(_date, _time))
 
-        # Provide success message.
+        transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount, price, location, notes, date, time) VALUES (:user_id, :name, :brand, :type, :preparation, :amount, :price, :location, :notes, :date, :time)", \
+            user_id=session["user_id"], name=_name, brand=_brand, type=_type, preparation=_preparation, amount=_amount, price=_price, location=_location, notes=_notes, date=_date, time=_time);
+
+        print("Transaction: {} \n".format(transaction_id))
+
         if ((_preparation == "Loose Leaf") or (_preparation == "Matcha Powder")):
             unit = "ounce(s) of"
         elif (_preparation == "Tea Bags"):
@@ -74,7 +85,6 @@ def input_tea():
             _message = congrats.format(_amount, unit, _brand, _name)
         else:
             _message = ""
-
         return render_template("input_tea.html", message=_message)
 
     else:
@@ -87,40 +97,51 @@ def log():
     """Decrement amount of tea by one serving"""
     _items = get_teas_by_user()
     if request.method == "POST":
-        print("dict: {}\n".format(request.form.to_dict()))
+        # Get form input
         vars = request.form.get("tea-select").split("_");
         _owned = float(vars[0])
         _brand = vars[1]
         _name = vars[2]
-        print("NOTES")
         _notes = request.form.get("notes")
-        print("notes: " + _notes)
-        info = get_tea_by_brand_and_name(_brand, _name)[0]
         _amt = float(request.form.get("amount"))
-        print("owned: {} used: {}\n".format(_owned, _amt))
+        info = get_tea_by_brand_and_name(_brand, _name)[0]
+
+        # Get current date and time
+        now = datetime.now()
+        _time = datetime.strftime(now, "%I:%M %p")
+        _date = datetime.strftime(now, "%m/%d/%Y")
+        print("date: {} time {} \n".format(_date, _time))
+
+        # Handle photo upload
+        if request.files:
+            image = request.files["photo"]
+            image_addr = os.path.join(app.config["IMAGE_UPLOADS"], image.filename)
+            image.save(image_addr)
+            print("Image saved @ {}\n".format(image_addr))
+        else:
+            image_addr = ""
+
         if (_owned >= _amt):
             # Update db to reflect tea consumption.
             _transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount) VALUES (:user_id, :name, :brand, :type, :preparation, :amount)",
                 user_id=session['user_id'], name=_name, brand=_brand, type=info['type'], amount=-float(_amt), preparation=info['preparation'])
-            db.execute("INSERT INTO logs (user_id, transaction_id, amount, notes) VALUES (:user_id, :transaction_id, :amount, :notes)", \
-                user_id=session['user_id'], transaction_id = _transaction_id, amount=float(_amt), notes=_notes)
+            db.execute("INSERT INTO logs (user_id, transaction_id, amount, notes, photopath, date, time) VALUES (:user_id, :transaction_id, :amount, :notes, :photopath, :date, :time)", \
+                user_id=session['user_id'], transaction_id = _transaction_id, amount=float(_amt), notes=_notes, photopath=image_addr, date=_date, time=_time)
         return redirect("/")
+
     else:
         return render_template("log.html", items=_items)
 
 
 @app.route("/journal", methods=["GET"])
 @login_required
-def history():
+def journal():
     """Show history of tea interactions"""
     _logs = db.execute("SELECT * FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id=:user_id", user_id=session['user_id'])
     _notes = db.execute("SELECT logs.notes FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id=:user_id", user_id=session['user_id'])
     note_list = [x['notes'] for x in _notes]
     for index, l in enumerate(_logs):
         l['note'] = note_list[index]
-        l['date'] = format_date(l['date'])
-        l['time'] = format_time(l['time'])
-
     return render_template("journal.html", logs=_logs)
 
 
@@ -162,6 +183,7 @@ def login():
 
 
 @app.route("/logout")
+@login_required
 def logout():
     """Log user out"""
 
@@ -218,6 +240,7 @@ def get_teas_by_user():
     print("REFRESHING TEA COLLECTION!")
     teas_by_user = db.execute("SELECT SUM(transactions.amount) as 'amount', user_id, name, brand, type, preparation FROM transactions WHERE user_id=:user_id GROUP BY user_id, name, brand, type, preparation", \
         user_id=session['user_id'])
+    print(teas_by_user)
     return teas_by_user
 
 @login_required
@@ -227,36 +250,11 @@ def get_tea_by_brand_and_name(_brand, _name):
         user_id=session['user_id'], brand=_brand, name=_name)
     return teas_by_user
 
-def format_date(date):
-    ds = date.split("-")
-    formatted_date = ds[1] + "/" + ds[2] + "/" + ds[0]
-    return formatted_date
-
-def format_time(time):
-    ts = time.split(":")
-    hours = int(ts[0])
-    minutes = int(ts[1])
-    ampm = '';
-    if (hours >= 12):
-        ampm = 'pm'
-    else:
-        ampm = 'am'
-    hours = hours % 12 - 5
-    if hours == 0:
-        hours = 12
-    if (minutes < 10):
-        minutes =  '0' + str(minutes)
-    formatted_time = str(hours) + ':' + str(minutes) + ' ' + ampm;
-    return formatted_time
-
-
-
 def errorhandler(e):
     """Handle error"""
     if not isinstance(e, HTTPException):
         e = InternalServerError()
     return apology(e.name, e.code)
-
 
 # Listen for errors
 for code in default_exceptions:

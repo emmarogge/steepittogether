@@ -24,22 +24,7 @@
                     console.log(amt_text)
                     currentRow.querySelector(".amount").innerHTML = amt_text
                 }
-                /* Create button to decrement amount of tea by 1 cup. */
-                // currentRow.querySelector(".button-drink").addEventListener("click", function() {
-                //     if (prep == "Loose Leaf" || prep == "Matcha Powder") {
-                //         window.location = 'drink?brand=' + brand + '&name=' + name
-                //         // currentRow.querySelector(".amount").innerHTML = String(Number(amt).toFixed(2) - Number(1/6).toFixed(2)) + " ounces"
-                //     } else if (prep == "Tea Bags"){
-                //         // currentRow.querySelector(".amount").innerHTML = String(Number(amt) - 1) + " bags"
-                //     }
-                // });
-                // currentRow.querySelector(".button-sell").addEventListener("click", function() {
-                //     var symbol = $(this).data('symbol');
-                //     if (symbol != undefined && symbol != null) {
-                //         window.location = '/sell?symbol=' + symbol;
-                //     }
-                // });
-            });}
+            })}
 </script>
 
 {% extends "layout.html" %}
@@ -57,8 +42,6 @@
                 <td>Type</td></td>
                 <td>Preparation</td>
                 <td>Amount</td>
-                <!--<td>Buy Stock</td>-->
-                <!--<td>Sell Stock</td>-->
             </tr>
         </thead>
     {% for item in items %}
@@ -68,10 +51,13 @@
             <td class="type">{{ item['type']}}</td>
             <td class="preparation">{{ item['preparation']}}</td>
             <td class="amount">{{ item['amount']}}</td>
-            <!--<td class="button-drink"><button class="buy-button" style="background-color:pink;width:100%">Drink A Cup</button></td>-->
-            <!--<td class="button-sell" data-symbol="{{ item['symbol'] }}"><button class="sell-button" style="background-color:#f5b82e;width:100%">Sell This Stock!</button></td>-->
         </tr>
     {% endfor %}
+    <form action="{{ url_for('input_tea') }}" method="get">
+        <td class="add-tea">
+            <button class="add-tea" type="submit">Add A Tea</button>
+        </td>
+    </form>
     </table>
 {% endblock %}
 </html>
