@@ -1,7 +1,7 @@
 # Files to ignore #
 
 # Ignore changes to database #
-#.db
+*.db
 
 # Scripts for tunneling #
 script*
