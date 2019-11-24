@@ -32,7 +32,7 @@ td {
 .journal-entry {
     display: table-row;
     padding: 100px;
-    /*border: 1px dotted;*/
+    width: 50%;
     box-shadow: 0 0 0 1px black;
     border-radius: 5px;;
 }
@@ -45,7 +45,7 @@ td {
 }
 
 .date-time-row.date {
-    width: 100px;
+    width: 200px;
 }
 
 .date-time-row {
@@ -78,5 +78,17 @@ td {
 .notes-row.notes {
     display: table-row;
     width: 100%;
+}
+
+.notes-header {
+    padding-top: 50px;
+}
+
+.journal-photo {
+    display: table-row;
+    height: 200px;
+    width: auto;
+    object-fit: cover;
+    object-position: center;
 }
 

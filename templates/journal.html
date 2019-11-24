@@ -40,9 +40,13 @@
             <td class="name">{{ log['name']}}</td>
             <td class="type">{{ log['type']}}</td>
         </tr>
-        <tr class="row">
-            <td class="notes" style="width:50%;">{{ log['note']}} </td>
-            <td class="photo" style="width:50%;"><img src="{{ log['photopath'] }}"/></td>
+        <tr class="notes-header">
+            <th></th>
+            <th>Notes</th>
+        </tr>
+        <tr class="notes-row">
+            <td style="width:50%;"><img class="journal-photo" src="{{ log['photopath'] }}"/></td>
+            <td class="notes" style="width:50;">{{ log['note']}} </td>
         </tr>
     </tbody>
     {% endfor %}
