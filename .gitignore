@@ -1,4 +1,5 @@
 # Files to ignore #
+*.bashrc
 
 # Ignore changes to database #
 *.db
