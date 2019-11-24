@@ -1,10 +1,33 @@
 #countdown {
-    width: 50%;
     display: block;
     color: black;
-    background-color: pink;
+    background-color: #9099A2;
 }
 #teaTimerBox {
-    background: pink;
-    width: 75%;
+    background: #9099A2;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+    text-align: center;
+}
+
+#start-button, #reset-button{
+    border-radius: 5px;
+    width: 25%;  
+    height: 10%;
+    background-color: #9966cc;
+    border-color: #9966cc;
+}
+
+#time{
+    font-size: 200px !important;
+    border: 2px;
+    padding: 25px;
+}
+
+#teaTypeInput{
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
 }
