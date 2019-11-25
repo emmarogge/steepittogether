@@ -11,17 +11,25 @@ Onyx: #49494b
 
 .form-group {
     padding-top: 4%;
+    text-align: center;
 }
 
 .btn.btn-primary {
-    background-color: #49494b;
-    border-color: #49494b;
+    background-color: #9da090;
+    border-color: #9da090;
     color: white;
-    padding: 4%;
+    padding: 1%;
+    text-align: center;
+    width: 100%;
 }
 
 .login-button{
 	margin-left: auto;
     margin-right: auto;
     text-align: center;
+}
+
+.tea-select {
+
+
 }

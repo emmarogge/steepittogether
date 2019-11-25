@@ -1,18 +1,24 @@
 table {
 	border-collapse: border;
 	outline: none;
-	border: none;
+	border:none 
 }
 
 .table thead th, .table td {
 	outline: none;
 	border: none;
-	padding: none;
+	padding: 20px;
+}
+
+.table {
+
+	border-radius: 25px;
+	padding: 25%;
 }
 
 .tea-row {
-    background-color: #d4d4d4;
-	border: none;
+    background-color: #c7c7d7;
+	border: none
 }
 
 #heading {
@@ -22,6 +28,11 @@ table {
     box-shadow: none;
     border-top: none;
     color: white;
+    font-family: "amatic sc";
+    font-weight: bold;
+    letter-spacing: 3px;
+	font-size: 200%;
+
 }
 
 .btn#add-tea-button {
@@ -30,6 +41,30 @@ table {
 	margin-right: auto;
 	text-align: center;
 	color: white;
-	border-color: #8a8aac;
-	background-color: #8a8aac;
+	border-color: #b6b9ad;
+	background-color: #b6b9ad;
+	font-family: "amatic sc";
+    font-weight: bold;
+    letter-spacing: 3px;
+    font-size: 150%;
+}
+
+
+#myteahead {
+
+	font-family: "dawning of a new day";
+	font-size: 350%;
+	margin: none;
+	padding: none;
+	font-weight: bold;
+
+}
+
+#row.tea-row {
+
+	font-family: "amatic sc";
+	font-weight: bold;
+	font-size: 175%;
+	letter-spacing: 3px;
+
 }

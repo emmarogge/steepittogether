@@ -8,6 +8,11 @@
 
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
 
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Amatic SC">
+
         <link href="/static/img/teapot.png" rel="icon">
 
         <link href="/static/css/styles.css" rel="stylesheet">
@@ -23,7 +28,9 @@
     <body>
 
         <nav class="navbar navbar-expand-md navbar-light bg-light border">
-            <a class="navbar-brand" href="/"><span>Steep It Together</span></a>
+            <div id="brandtitle">
+            <a class="navbar-brand" style="font-size: 115%;" href="/"><span>Steep It Together</span></a>
+            </div>
             <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -31,17 +38,17 @@
                 {% if session.user_id %}
                     <ul class="navbar-nav mr-auto mt-2">
                         <li class="nav-item">
-                            <a class="nav-link" href="/">Tea Collection</a>
+                            <a class="nav-link" href="/">TEA COLLECTION</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/log">Log a Cup</a>
+                            <a class="nav-link" href="/log">LOG A CUP</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="/journal">Journal</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/reminder">Reorder Reminder</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/utilities">Tea Utilities</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/journal">JOURNAL</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/reminder">REORDER REMINDER</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/utilities">TEA UTILITIES</a></li>
                     </ul>
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout">LOG OUT</a></li>
                     </ul>
                 {% else %}
                     <ul class="navbar-nav ml-auto mt-2">

@@ -10,11 +10,37 @@ Onyx: #49494b
 
 .navbar {
     background-color:  #A3A9BE;
+    height: min-content;
+    border-radius: 20px;
+    opacity: 0.85;
+
 }
+
+#brandtitle {
+    font-family: "dawning of a new day";
+    font-weight: bold;
+    font-size: 350% !important;
+    padding: none;
+    margin: none;
+
+}
+
+#navbar.navbar-collapse {
+    height: min-content;
+    border-radius: 20px;
+    font-family: "amatic sc";
+    letter-spacing: 2px;
+    color: black;
+    font-weight: bolder;
+    word-spacing: 2px;
+    font-size: 150%;
+
+}
+
 body
 {
     margin: 50px;
-    background-image: url("https://i.imgur.com/XQ9OZGx.jpg");
+    background-image: url(https://i.imgur.com/XQ9OZGx.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: right top;
@@ -82,3 +108,5 @@ img {
 .text{
     background-color: white;
 }
+
+
