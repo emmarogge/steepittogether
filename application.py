@@ -124,8 +124,8 @@ def log():
             # Update db to reflect tea consumption.
             _transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount) VALUES (:user_id, :name, :brand, :type, :preparation, :amount)",
                 user_id=session['user_id'], name=_name, brand=_brand, type=info['type'], amount=-float(_amt), preparation=info['preparation'])
-            db.execute("INSERT INTO logs (user_id, transaction_id, amount, notes, photopath, date, time) VALUES (:user_id, :transaction_id, :amount, :notes, :photopath, :date, :time)", \
-                user_id=session['user_id'], transaction_id = _transaction_id, amount=float(_amt), notes=_notes, photopath=image_addr, date=_date, time=_time)
+            _log_id = db.execute("INSERT INTO logs (user_id, transaction_id, amount, notes, photopath, curr_date, curr_time) VALUES (:user_id, :transaction_id, :amount, :notes, :photopath, :curr_date, :curr_time)", \
+                user_id=session['user_id'], transaction_id = _transaction_id, amount=float(_amt), notes=_notes, photopath=image_addr, curr_date=_date, curr_time=_time)
         return redirect("/")
 
     else:
