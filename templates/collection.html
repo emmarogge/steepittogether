@@ -1,5 +1,5 @@
 <html lang="en">
-<link href="/static/css/index.css" rel="stylesheet">
+<link href="/static/css/collection.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script language="javascript">
     $(document).ready(function () {
@@ -33,31 +33,30 @@
 {% endblock %}
 
 {% block main %}
-    <!--<b>Your current cash balance is {{ cash }}.</b>-->
-    <table class="table table-bordered">
-        <thead class="thead-dark">
+    <table class="table" border="0|0" id="teas">
+        <thead id="heading">
             <tr>
-                <td>Brand</td>
-                <td>Name</td>
-                <td>Type</td></td>
-                <td>Preparation</td>
-                <td>Amount</td>
+                <th>Brand</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Preparation</th>
+                <th>Amount</th>
             </tr>
         </thead>
     {% for item in items %}
-        <tr id="row">
-            <td class="brand">{{ item['brand'] }}</td>
+        <tr id="row" class="tea-row">
+            <td class="cell" class="brand">{{ item['brand'] }}</td>
             <td class="name">{{ item['name'] }}</td>
             <td class="type">{{ item['type']}}</td>
             <td class="preparation">{{ item['preparation']}}</td>
             <td class="amount">{{ item['amount']}}</td>
         </tr>
     {% endfor %}
+    </table>
     <form action="{{ url_for('input_tea') }}" method="get">
         <td class="add-tea">
-            <button class="add-tea" type="submit">Add A Tea</button>
+            <button class="btn" type="submit" id="add-tea-button">Add A Tea</button>
         </td>
     </form>
-    </table>
 {% endblock %}
 </html>

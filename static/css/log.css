@@ -17,4 +17,11 @@ Onyx: #49494b
     background-color: #49494b;
     border-color: #49494b;
     color: white;
+    padding: 4%;
+}
+
+.login-button{
+	margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }

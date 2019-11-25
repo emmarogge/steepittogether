@@ -1,22 +1,15 @@
-
-/*
-Rose Gold: #bd8c7d
-
-Soft Gold: #d1bfa7
-
-Silver: #8e8e90
-
-Onyx: #49494b
-*/
-
 .form-group {
-    width: 50%;
-    background: #bd8c7d;
-    padding: 15px;
+    background: rgba(144, 153, 162, .90);
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+    text-align: center;
+
 }
 
-.btn.btn-primary {
-    background-color: #49494b;
-    border-color: #49494b;
-    color: white;
+#button{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }

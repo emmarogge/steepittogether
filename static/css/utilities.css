@@ -1,15 +1,11 @@
 #countdown {
     display: block;
     color: black;
-    background-color: #9099A2;
-}
-
-.time {
-	font-size: 500px;
+    background-color: #D1E3Fa;
 }
 
 #teaTimerBox {
-    background: #9099A2;
+    background: #D1E3Fa;
     padding: 20px;
     margin-left: auto;
     margin-right: auto;
@@ -21,12 +17,11 @@
     border-radius: 5px;
     width: 25%;  
     height: 10%;
-    background-color: #9966cc;
-    border-color: #9966cc;
+    background-color: #5C5B61;
+    border-color: #5C5B61;
 }
 
-#time{
-    font-size: 200px !important;
+.time{
     border: 2px;
     padding: 25px;
 }

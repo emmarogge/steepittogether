@@ -1,0 +1,35 @@
+table {
+	border-collapse: border;
+	outline: none;
+	border: none;
+}
+
+.table thead th, .table td {
+	outline: none;
+	border: none;
+	padding: none;
+}
+
+.tea-row {
+    background-color: #d4d4d4;
+	border: none;
+}
+
+#heading {
+    background-color: #5c5b61;
+    border-color: #5c5b61;
+    border: none;
+    box-shadow: none;
+    border-top: none;
+    color: white;
+}
+
+.btn#add-tea-button {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	color: white;
+	border-color: #8a8aac;
+	background-color: #8a8aac;
+}
