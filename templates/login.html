@@ -1,4 +1,34 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Amatic SC">
+<style>
+    p {
+        font-family: "Amatic SC";
+        font-size: 250%;
+    }
+.btn.btn-primary#log-in-button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: white;
+    border-color: #b6b9ad;
+    background-color: #b6b9ad;
+    font-family: "amatic sc";
+    font-weight: bold;
+    letter-spacing: 3px;
+    font-size: 150%;
+}
+input {
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+</style>
 {% extends "layout.html" %}
 
 {% block title %}
@@ -6,6 +36,7 @@
 {% endblock %}
 
 {% block main %}
+    <p class="centered">Steep It Together is a website for documenting your experiences with tea!<br> Log in or create a free account today!</p>
     <form action="/login" method="post">
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
@@ -14,8 +45,8 @@
             <input class="form-control" name="password" placeholder="Password" type="password">
         </div>
         <div id="login-button">
-            <button class="btn btn-primary" type="submit">Log In</button>
+            <button class="btn btn-primary" id="log-in-button" type="submit">Log In</button>
         </div>
     </form>
-    <p class="centered">Steep It Together is a website for documenting your experiences with tea! Log in or create a free account today!</p>
 {% endblock %}
+</html>
