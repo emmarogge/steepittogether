@@ -1,13 +1,39 @@
+.entry {
+    border-color: black;
+    border-width: 20px;
+    border-style: solid;
+}
 
-/*
-Rose Gold: #bd8c7d
+.log-table {
+    border-collapse: separate;
+    border-spacing: 5px;
+    width: 100%;
+    border: none;
+    background-color: #8a8aac;
+}
 
-Soft Gold: #d1bfa7
+.table {
+    background-color: #8a8aac !important;
+    border-radius: 25px;
+    padding: 15px;
+}
+.table-border {
+    background-color: #8a8aac !important;
+    border: 1px solid;
+    border-color: black;
+    width: inherit;
+    border-spacing: 5px;
+    border-collapse: separate;
+}
 
-Silver: #8e8e90
 
-Onyx: #49494b
-*/
+td .enjoyed-text {
+    vertical-align: middle;
+    padding: 20px 0px;
+    width: 200vh;
+    display: table-cell;
+    vertical-align: middle;
+}
 
 .journal-photo-col {
     width: 200px;
@@ -25,6 +51,8 @@ Onyx: #49494b
     padding-right: 30px;
     padding-top: 5px;
     padding-bottom: 5px;
+    background-color: #8a8aac !important;
+    border-radius: 15px;
 }
 
 th {
@@ -34,6 +62,8 @@ th {
     padding: 0px 0px !important;
     margin: 0px 0px !important;
     vertical-align: text-bottom;
+    background-color: #c7c7d7;
+    color: white;
 }
 
 td {
@@ -46,12 +76,12 @@ td {
 }
 
 .journal-label {
-    width: 50px;
+    height: 20px;
+    background-color: #8a8aac;
 }
 
 .row {
     display: table-row;
-    /*width: 100%;*/
     padding-left: 15px;
 }
 
@@ -59,41 +89,7 @@ td {
     display: table-row;
     padding: 100px;
     width: 50%;
-    box-shadow: 0 0 0 1px black;
     border-radius: 5px;;
-}
-
-.log-table {
-    border-collapse: separate;
-    border-spacing: 5px;
-    width: 100%;
-    border: none;
-}
-
-.date-time-row.date {
-    width: 200px;
-}
-
-.date-time-row {
-    display: table-header-group;
-    width: 100%;
-}
-
-.tea-info-header {
-    width: 100%;
-    border: none;
-    outline: none;
-    text-align: left;
-    padding: 1px 1px;
-}
-
-.tea-info-row {
-    display: table-row-group;
-    width: 100%;
-    border: none;
-    outline: none;
-    text-align: left;
-    padding: 1px 1px;
 }
 
 .notes-row {
@@ -104,6 +100,8 @@ td {
 .notes-row.notes {
     display: table-row;
     width: 100%;
+    border-bottom: 1px solid;
+    color: black;
 }
 
 .notes-header {

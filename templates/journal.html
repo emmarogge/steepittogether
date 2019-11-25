@@ -23,38 +23,26 @@
 {% endblock %}
 
 {% block main %}
-    <table class="table table-border log-table">
+    <table class="table log-table">
     {% for log in logs %}
-    <thead>
-        <tr class="date-time-row">
-            <th colspan="2" id="date" class="date">{{ log['curr_date'] }}</th>
-            <th colspan="2" id="time" class="time">{{ log['curr_time'] }}</th>
-            <th></th>
-        </tr>    
-    </thead>
-    <tbody class="journal-entry">
-        <tr>
-            <td class="journal-photo-col" rowspan="6" colspan="2">
-                <img class="journal-photo" src="{{ log['photopath'] }}"/>
-            </td>
-        </tr>
-        <tr>
-            <th class="journal-label">Brand</th>
-            <td class="brand">{{ log['brand']}}</td>
-        </tr>
-        <tr>
-            <th class="journal-label">Name</th> 
-            <td class="name">{{ log['name']}}</td>
-        </tr>
-        <tr>
-            <th class="journal-label">Type</th>
-            <td class="type">{{ log['type']}}</td>
-        </tr>
-        <tr class="journal-label">
-            <th>Notes</th>
-            <td class="notes">{{ log['note']}} </td>
-        </tr>
-    </tbody>
+    <table class="table-border">
+        <thead>
+                <td>You enjoyed a cup of {{ log['brand'] }} {{ log['name'] }} at {{ log['curr_time'] }} on {{ log['curr_date'] }}.</td>
+        </thead>
+        <tbody class="journal-entry">
+            <tr>
+                <td class="journal-photo-col" rowspan="6" colspan="2">
+                    <div class="polaroid-image">
+                    <img class="journal-photo" src="{{ log['photopath'] }}"/>
+                    </div>
+                </td>
+            </tr>
+            <th class="journal-label">Notes</th>
+            <tr class="journal-notes">
+                <td class="notes">{{ log['note']}} </td>
+            </tr>
+        </tbody>
+    </table>
     {% endfor %}
     </table>
 {% endblock %}
