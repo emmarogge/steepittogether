@@ -1,21 +1,57 @@
-{% extends "layout.html" %}
+<html lang="en">
+<link href="/static/css/styles.css" rel="stylesheet">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Amatic SC">
+<style>
+    p {
+        font-family: "Amatic SC";
+        font-size: 250%;
+        text-align: center;
+    }
+.btn.btn-primary#log-in-button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: white;
+    border-color: #b6b9ad;
+    background-color: #b6b9ad;
+    font-family: "amatic sc";
+    font-weight: bold;
+    letter-spacing: 3px;
+    font-size: 150%;
+}
+input {
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
 
+</style>
+{% extends "layout.html" %}
 {% block title %}
     Register New User
 {% endblock %}
 
 {% block main %}
+    <p>Steep It Together is a website for documenting your experiences with tea!<br> Log in or create a free account today!</p>
     <form action="/register" method="post">
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
         </div>
         <div class="form-group">
-            <input class="form-control" name="password" placeholder="Password" type="text">
+            <input autocomplete="off" autofocus class="form-control" name="email" placeholder="Email" type="email">
         </div>
         <div class="form-group">
-            <input class="form-control" name="confirmation" placeholder="Confirmation" type="text">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="Confirmation" type="password">
         </div>
         <button class="btn btn-primary centered" type="submit">Submit</button>
     </form>
-    <p class="centered">Steep It Together is a website for documenting your experiences with tea! Log in or create a free account today!</p>
 {% endblock %}
+</html>

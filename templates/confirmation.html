@@ -1,0 +1,28 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Amatic SC">
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+<p style="font-family: 'amatic sc';">
+Your account was successfully created. Please click the link below<br>
+to confirm your email address and activate your account:
+<a href="{{ confirm_url }}">{{ confirm_url }}</a>
+</p>  
+
+<p>
+--<br>
+Questions? Comments? Email steepittogether@gmail.com.
+</p>
+
+{% endblock %}
+</html>

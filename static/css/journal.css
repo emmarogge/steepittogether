@@ -4,6 +4,11 @@
     border-style: solid;
 }
 
+
+.table.table.log-table {
+    margin-bottom: 0 !important;
+}
+
 .log-table {
     border-collapse: separate;
     border-spacing: 5px;

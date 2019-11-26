@@ -1,15 +1,21 @@
-import os
 import datetime
+import os
+import smtplib
 
 from cs50 import SQL
-from flask import Flask, flash, jsonify, redirect, render_template, request, session
+from datetime import datetime
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
+from flask_mail import Mail, Message
 from flask_session import Session
-from tempfile import mkdtemp
 from flask_wtf.file import FileField, FileRequired
+from helpers import apology, login_required, coming_soon
+from itsdangerous import URLSafeTimedSerializer
+from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import apology, login_required, coming_soon
-from datetime import datetime
+
 
 # Env Vars
 UPLOAD_FOLDER = os.path.join('static', 'photos')
@@ -17,8 +23,13 @@ UPLOAD_FOLDER = os.path.join('static', 'photos')
 # Configure application
 app = Flask(__name__)
 
+# Load the configuration from the instance folder
+app.config.from_pyfile('instance/config.py')
+
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+
+# Set up folder for uploading images
 app.config["IMAGE_UPLOADS"] = UPLOAD_FOLDER
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG"]
 
@@ -34,7 +45,12 @@ def after_request(response):
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+
+ts = URLSafeTimedSerializer(app.config["SECRET_KEY"])
 Session(app)
+
+# Set up mail instance
+mail = Mail(app)
 
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///teatime.db")
@@ -131,7 +147,6 @@ def log():
     else:
         return render_template("log.html", items=_items)
 
-
 @app.route("/journal", methods=["GET"])
 @login_required
 def journal():
@@ -147,7 +162,6 @@ def journal():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
-
     # Forget any user_id
     session.clear()
 
@@ -172,6 +186,8 @@ def login():
 
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
+        session["email"] = rows[0]["email"]
+        session["username"] = rows[0]["username"]
 
         # Redirect user to home page
         return redirect("/")
@@ -206,18 +222,29 @@ def register():
     if request.method == "POST":
         # Validate the username has not been allocated already.
         exists = db.execute("SELECT EXISTS(SELECT * FROM users WHERE username = :username)", username=request.form.get("username"));
-        if exists == 1:
-            print("Username already exists")
-        else:
-            print("Username is fresh")
+
         if (exists != 1):
             # Validate agreement of password and confirmation.
             password_agreement = (request.form.get("password") == request.form.get("confirmation"))
             if (request.form.get("username") != None) and password_agreement:
+                # Insert new account information into users table
                 _username = request.form.get("username")
-                print("USERNAME: {}".format(request.form.get("username")))
-                rows = db.execute("INSERT INTO users (username, hash) VALUES(:username, :hash)", username=request.form.get("username"), hash=generate_password_hash(request.form.get("password")))
-                _message = "Congratulations, {}!\n Your account has been registered successfully.".format(request.form.get("username"))
+                _email = request.form.get("email")
+                rows = db.execute("INSERT INTO users (username, hash, email) VALUES(:username, :hash, :email)", \
+                    username=_username, hash=generate_password_hash(request.form.get("password")), email=_email)
+
+                # Send confirmation email with secret link
+                subject = "Steep It Together account confirmation"
+                token = ts.dumps(_email, salt="email-confirmation-key")
+                confirm_url = url_for(
+                                      'confirm_email',
+                                      token=token,
+                                      _external=True)
+                html = render_template('confirmation.html',confirm_url=confirm_url)
+                _message = "Congratulations, {}!\n Your account has been registered successfully.\n Check your email for a confirmation link.".format(_username)
+                print(_message)
+                send_email(_email, subject, html)
+                # Render success message.
                 return render_template("success.html", message=_message)
             else:
                 return apology("Username cannot be null. Password and confirmation must match.")
@@ -227,6 +254,20 @@ def register():
     else:
         return render_template("register.html")
 
+@app.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = ts.loads(token, salt="email-confirm-key", max_age=86400)
+    except:
+        return redirect(url_for("login"))
+    print("confirmed email")
+    rows = db.execute("update users set email_confirmed=true where email=:email", email)
+
+    session["user_id"] = rows[0]["id"]
+    session["email"] = rows[0]["email"]
+    session["username"] = rows[0]["username"]
+
+    return redirect(url_for('login'))
 
 @app.route("/utilities", methods=["GET", "POST"])
 @login_required
@@ -248,6 +289,26 @@ def get_tea_by_brand_and_name(_brand, _name):
     teas_by_user = db.execute("SELECT * FROM (SELECT SUM(transactions.amount) as 'amount', user_id, name, brand, type, preparation FROM transactions WHERE user_id=:user_id GROUP BY user_id, name, brand, type, preparation) WHERE brand=:brand AND name=:name", \
         user_id=session['user_id'], brand=_brand, name=_name)
     return teas_by_user
+
+def send_email(email, subject, html_message):
+    sender_email = "steepittogether@gmail.com"
+    sender_pw = r"ilovetea"
+    dest_email = email
+
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = subject
+    msg['From'] = sender_email
+    msg['To'] = dest_email
+    body =  MIMEText(html_message, 'html')
+    msg.attach(body)
+
+    s = smtplib.SMTP_SSL('smtp.gmail.com')
+    s.login(sender_email, sender_pw)
+
+    s.sendmail(sender_email, dest_email, msg.as_string())
+    print("send email")
+    s.quit()
+
 
 def errorhandler(e):
     """Handle error"""
