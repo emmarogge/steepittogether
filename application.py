@@ -12,6 +12,7 @@ from flask_session import Session
 from flask_wtf.file import FileField, FileRequired
 from helpers import apology, login_required, coming_soon
 from itsdangerous import URLSafeTimedSerializer
+from random import randint
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -140,8 +141,16 @@ def log():
             # Update db to reflect tea consumption.
             _transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount, curr_date, curr_time) VALUES (:user_id, :name, :brand, :type, :preparation, :amount, :curr_date, :curr_time)",
                 user_id=session['user_id'], name=_name, brand=_brand, type=info['type'], amount=-float(_amt), preparation=info['preparation'], curr_date=_date, curr_time=_time)
-            _log_id = db.execute("INSERT INTO logs (user_id, transaction_id, amount, notes, photopath, curr_date, curr_time) VALUES (:user_id, :transaction_id, :amount, :notes, :photopath, :curr_date, :curr_time)", \
-                user_id=session['user_id'], transaction_id = _transaction_id, amount=float(_amt), notes=_notes, photopath=image_addr, curr_date=_date, curr_time=_time)
+            if image_addr != "":
+                _log_id = db.execute("INSERT INTO logs (user_id, transaction_id, amount, notes, photopath, curr_date, curr_time) VALUES (:user_id, :transaction_id, :amount, :notes, :photopath, :curr_date, :curr_time)", \
+                    user_id=session['user_id'], transaction_id = _transaction_id, amount=float(_amt), notes=_notes, photopath=image_addr, curr_date=_date, curr_time=_time)
+            else:
+                random_bun = get_random_bun()
+                image_addr = os.path.join(app.config["IMAGE_UPLOADS"], random_bun)
+                _log_id = db.execute("INSERT INTO logs (user_id, transaction_id, amount, notes, photopath, curr_date, curr_time) VALUES (:user_id, :transaction_id, :amount, :notes, :photopath, :curr_date, :curr_time)", \
+                    user_id=session['user_id'], transaction_id = _transaction_id, amount=float(_amt), notes=_notes, photopath=image_addr, curr_date=_date, curr_time=_time)
+
+
         return redirect("/")
 
     else:
@@ -309,6 +318,9 @@ def send_email(email, subject, html_message):
     print("send email")
     s.quit()
 
+def get_random_bun():
+    x = randint(6,22)
+    return "buns_in_teacups/bun_in_teacup_{}.jpg".format(x)
 
 def errorhandler(e):
     """Handle error"""
