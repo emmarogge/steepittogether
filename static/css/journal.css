@@ -1,53 +1,22 @@
-.entry {
-    border-color: black;
-    border-width: 20px;
-    border-style: solid;
-}
-
-
-.table.table.log-table {
-    margin-bottom: 0 !important;
-}
-
-.log-table {
-    border-collapse: separate;
-    border-spacing: 5px;
-    width: 100%;
-    border: none;
+.entry-box {
     background-color: #8a8aac;
-}
-
-.table {
-    background-color: #8a8aac !important;
-    border-radius: 25px;
-    padding: 15px;
-}
-.table-border {
-    background-color: #8a8aac !important;
-    border: 1px solid;
-    border-color: black;
-    width: inherit;
-    border-spacing: 5px;
-    border-collapse: separate;
-}
-
-
-td .enjoyed-text {
-    vertical-align: middle;
-    padding: 20px 0px;
-    width: 200vh;
-    display: table-cell;
-    vertical-align: middle;
+    margin: 3rem;
+    padding: 1rem;
+    border-radius: 10px;
+    font-family: "Amatic SC";
+    font-size: 200%;
 }
 
 .journal-photo-col {
     width: 200px;
     height: auto;
     display: table-cell;
+    font-family: "Amatic SC";
 }
 
 .journal-photo {
-    display: table-row;
+    /*display: table-row;*/
+    display: inline;
     height: 200px;
     width: auto;
     object-fit: cover;
@@ -58,48 +27,38 @@ td .enjoyed-text {
     padding-bottom: 5px;
     background-color: #8a8aac !important;
     border-radius: 15px;
+    font-family: "Amatic SC";
 }
 
-th {
-    border: none !important;
-    /*outline: 1px solid;*/
-    height: min-content;
-    padding: 0px 0px !important;
-    margin: 0px 0px !important;
-    vertical-align: text-bottom;
-    background-color: #c7c7d7;
-    color: white;
-}
-
-td {
-    border: none !important;
-    /*outline: 1px solid;*/
-    height: min-content;
-    padding: 0px 0px !important;
-    margin: 0px 0px !important;
-    vertical-align: top;
-}
-
-.journal-label {
+th.journal-label {
     height: 20px;
     background-color: #8a8aac;
+    font-family: "Amatic SC";
+    font-size: 200%;
 }
 
 .row {
     display: table-row;
     padding-left: 15px;
+    font-family: "Amatic SC";
 }
 
 .journal-entry {
     display: table-row;
     padding: 100px;
     width: 50%;
-    border-radius: 5px;;
+    border-radius: 5px;
+    font-family: "Amatic SC";
 }
 
 .notes-row {
     display: table-row;
     width: 100%;
+    font-family: "Amatic SC";
+}
+
+td.notes {
+    font-size: 30;
 }
 
 .notes-row.notes {
@@ -107,11 +66,12 @@ td {
     width: 100%;
     border-bottom: 1px solid;
     color: black;
+    font-family: "Amatic SC";
 }
 
 .notes-header {
     padding-top: 50px;
+    font-family: "Amatic SC";
+    border-width: 3px;
+    border-color: black;
 }
-
-
-
