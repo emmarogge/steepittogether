@@ -1,5 +1,6 @@
 import datetime
 import os
+import random
 import smtplib
 
 from cs50 import SQL
@@ -12,7 +13,6 @@ from flask_session import Session
 from flask_wtf.file import FileField, FileRequired
 from helpers import apology, login_required, coming_soon
 from itsdangerous import URLSafeTimedSerializer
-from random import randint
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -106,7 +106,6 @@ def input_tea():
     else:
         return render_template("input_tea.html", message="")
 
-
 @app.route("/log", methods=["GET", "POST"])
 @login_required
 def log():
@@ -129,11 +128,15 @@ def log():
         print("date: {} time {} \n".format(_date, _time))
 
         # Handle photo upload
-        if request.files:
+        if "photo" in request.files:
             image = request.files["photo"]
-            image_addr = os.path.join(app.config["IMAGE_UPLOADS"], image.filename)
-            image.save(image_addr)
-            print("Image saved @ {}\n".format(image_addr))
+            if image.filename != "":
+                image_addr = os.path.join(app.config["IMAGE_UPLOADS"], image.filename)
+                print("image.filename: " + image.filename)
+                image.save(image_addr)
+                print("Image saved @ {}\n".format(image_addr))
+            else:
+                image_addr = ""
         else:
             image_addr = ""
 
@@ -146,13 +149,12 @@ def log():
                     user_id=session['user_id'], transaction_id = _transaction_id, amount=float(_amt), notes=_notes, photopath=image_addr, curr_date=_date, curr_time=_time)
             else:
                 random_bun = get_random_bun()
+                print("RANDOM BUN: {}".format(random_bun))
                 image_addr = os.path.join(app.config["IMAGE_UPLOADS"], random_bun)
+                print("IMAGE ADDR: {}".format(image_addr))
                 _log_id = db.execute("INSERT INTO logs (user_id, transaction_id, amount, notes, photopath, curr_date, curr_time) VALUES (:user_id, :transaction_id, :amount, :notes, :photopath, :curr_date, :curr_time)", \
                     user_id=session['user_id'], transaction_id = _transaction_id, amount=float(_amt), notes=_notes, photopath=image_addr, curr_date=_date, curr_time=_time)
-
-
         return redirect("/")
-
     else:
         return render_template("log.html", items=_items)
 
@@ -166,7 +168,6 @@ def journal():
     for index, l in enumerate(_logs):
         l['note'] = note_list[index]
     return render_template("journal.html", logs=_logs)
-
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -204,7 +205,6 @@ def login():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
-
 
 @app.route("/logout")
 @login_required
@@ -319,7 +319,7 @@ def send_email(email, subject, html_message):
     s.quit()
 
 def get_random_bun():
-    x = randint(6,22)
+    x = random.randint(6,22)
     return "buns_in_teacups/bun_in_teacup_{}.jpg".format(x)
 
 def errorhandler(e):
