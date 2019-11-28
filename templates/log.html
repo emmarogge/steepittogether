@@ -1,6 +1,11 @@
 <html lang="en">
 <link href="/static/css/log.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Amatic SC">
+
 <script language="javascript">
 $(document).ready(function () {
     $(".select").onchange = function () {
@@ -38,9 +43,11 @@ $(document).ready(function () {
             <label class="text" for="notesInput">Notes about your tea drinking experience...</label>
             <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
         </div>
-        <div class="form-group">
-            <label class="text" for="photo">Upload a photo of your tea!</label>
-            <input type="file" name="photo" id="photo">
+        <div class="form-group" id="photo-input-group">
+        	<div id="photo-div">
+	            <label class="text" for="photo">Upload a photo of your tea!</label>
+	            <input type="file" name="photo" id="photo-button">
+        	</div>
         </div>
         <button class="btn btn-primary" type="submit" id="log-button">Log</button>
     </form>
