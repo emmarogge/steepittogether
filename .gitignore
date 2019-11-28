@@ -2,7 +2,7 @@
 *.bashrc
 
 # Ignore changes to database #
-
+*.db*.db*.db*.db*.db*.db*.db*.db*.db
 # Scripts for tunneling #
 script*
 
