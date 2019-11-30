@@ -2,9 +2,11 @@
 
     font-family: "dawning of a new day";
     font-weight: bolder;
-    font-size: 275%;
+    font-size: 290%;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
+    padding: 15px;
 
 }
 
@@ -15,22 +17,52 @@
     font-weight: bolder;
     letter-spacing: 1px;
     font-size: 100%;
-    background-color: #5c5b61;
+    background-color: #c7c7d7;
     opacity: 0.95;
     padding: 20px;
-    border-radius: 10px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: double;
+    border-color: white;
+    /*border-radius: 3px;*/
 }
 
+#choosetealog {
+
+    font-family: "amatic sc";
+    padding: 20px;
+    background-color: #c7c7d7;
+    /*#b6b9ad;*/
+    opacity: 0.96;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: double;
+    border-color: white;
+    border-bottom-style: none;
+
+}
+
+
 .btn.btn-primary {
-    background-color: #9da090;
-    border-color: #9da090;
+    background-color: #838189;
+    border-color: #838189;
     color: white;
+    font-weight: bolder;
+    letter-spacing: 2px;
     padding: 2%;
     text-align: center;
     width: min-content;
-    font-size: 200%;
+    font-size: 150%;
     font-family: "Amatic SC";
+    padding: 8px 32px;
+    margin: 30px;
+    height: min-content
+    margin-left: auto;
+    margin-right: auto;
 }
+
 
 #photo-input-group.file {
     margin-left: auto;
@@ -51,11 +83,30 @@
 }
 
 label.text, input#photo-button {
-    background-color: #8a8aac;
-    border-color: #8a8aac;
+    background-color: #c7c7d7;
+    border-color: #c7c7d7;
     border-radius: 10px;
     padding: 10px;
     font-family: "Amatic SC";
     font-size: 150%;
     text-align: center;
+    color: white;
 }
+
+
+.btn.btn-primary:hover {
+
+    background-color: #5c5b61;
+    border-color: #5c5b61;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+
+}
+
+.btn.btn-primary:active {
+
+    background-color: #5c5b61;
+    border-color: #5c5b61;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+
+}    
