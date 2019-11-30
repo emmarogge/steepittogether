@@ -5,13 +5,6 @@
 
 }
 
-#timerhead {
-
-    font-family: "dawning of a new day";
-    font-weight: bold;
-    font-size: 250%;
-
-}
 
 #teaTimerBox {
     background: #c7c7d7;
@@ -20,7 +13,27 @@
     margin-right: auto;
     border-radius: 15px;
     text-align: center;
-    width: 75%;
+    width: 60%;
+    opacity: 0.95;
+
+}
+
+
+#timerheadbox {
+
+    font-family: "dawning of a new day";
+    font-weight: bolder;
+    font-size: 300%;
+    padding: 10px;
+
+}
+
+#teatypetimer {
+
+    font-family: "amatic sc";
+    font-weight: bolder;
+    font-size: 160%;
+    letter-spacing: 1px;
 
 }
 
@@ -29,29 +42,52 @@
     border-radius: 5px;
     width: 25%;  
     height: 10%;
-    background-color: #b6b9ad;
-    border-color: #b6b9ad;
+    background-color: #838189;
+    border-color: #838189;
     -webkit-transition-duration: 0.1s;
     transition-duration: 0.1s;
     cursor: pointer;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-family: "amatic sc";
+    font-weight: bolder;
+    font-size: 160%;
+    letter-spacing: 1px;
 
 }
 
 #start-button:hover, #reset-button:hover {
 
-    background-color: #a5a89a;
-    border-color: #a5a89a;
+    background-color: #5c5b61;
+    border-color: #5c5b61;
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+
+}
+
+#start-button:active, #reset-button:active {
+
+    background-color: #5c5b61;
+    border-color: #5c5b61;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
 
 }
 
 .time{
     border: 2px;
     padding: 20px;
+    font-family: "amatic sc";
+    font-weight: bold;
 }
 
 #teaTypeInput{
     max-width: 50%;
     margin-left: auto;
     margin-right: auto;
+    font-family: "amatic sc";
+    font-weight: bolder;
+    font-size: 125%;
+    letter-spacing: 2px;
 }
