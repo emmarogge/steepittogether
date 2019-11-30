@@ -1,13 +1,31 @@
+#logteaheader {
+
+    font-family: "dawning of a new day";
+    font-weight: bolder;
+    font-size: 275%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
 .form-group {
     padding-top: 4%;
     text-align: center;
+    font-family: "amatic sc";
+    font-weight: bolder;
+    letter-spacing: 1px;
+    font-size: 100%;
+    background-color: #5c5b61;
+    opacity: 0.95;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .btn.btn-primary {
     background-color: #9da090;
     border-color: #9da090;
     color: white;
-    padding: 1%;
+    padding: 2%;
     text-align: center;
     width: min-content;
     font-size: 200%;
