@@ -1,7 +1,8 @@
 table {
 	border-collapse: border;
 	outline: none;
-	border:none 
+	border:none; 
+	opacity: 0.97;
 }
 
 .table thead th, .table td {

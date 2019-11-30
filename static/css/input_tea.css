@@ -9,7 +9,7 @@
 
 
 .form-group {
-    background-color: #c7c7d7; 
+    background-color: #8a8aa9; 
     opacity: 0.93;
     padding: 20px;
     margin-left: auto;
@@ -19,6 +19,7 @@
     font-family: "amatic sc";
     font-size: 150%;
     letter-spacing: 1px;
+    color: #d3d3e0;
 }
 
 #button{
