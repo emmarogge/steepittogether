@@ -1,11 +1,20 @@
 #countdown {
     display: block;
     color: black;
-    background-color: #b6b9ad;
+    background-color: #c7c7d7;
+
+}
+
+#timerhead {
+
+    font-family: "dawning of a new day";
+    font-weight: bold;
+    font-size: 250%;
+
 }
 
 #teaTimerBox {
-    background: #b6b9ad;
+    background: #c7c7d7;
     padding: 20px;
     margin-left: auto;
     margin-right: auto;
@@ -20,8 +29,20 @@
     border-radius: 5px;
     width: 25%;  
     height: 10%;
-    background-color: #5C5B61;
-    border-color: #5C5B61;
+    background-color: #b6b9ad;
+    border-color: #b6b9ad;
+    -webkit-transition-duration: 0.1s;
+    transition-duration: 0.1s;
+    cursor: pointer;
+
+}
+
+#start-button:hover, #reset-button:hover {
+
+    background-color: #a5a89a;
+    border-color: #a5a89a;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+
 }
 
 .time{
