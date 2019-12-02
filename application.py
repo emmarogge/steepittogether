@@ -144,6 +144,7 @@ def log():
             # Update db to reflect tea consumption.
             _transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount, curr_date, curr_time) VALUES (:user_id, :name, :brand, :type, :preparation, :amount, :curr_date, :curr_time)",
                 user_id=session['user_id'], name=_name, brand=_brand, type=info['type'], amount=-float(_amt), preparation=info['preparation'], curr_date=_date, curr_time=_time)
+            print("USED {} amount of tea!".format(float(_amt)))
             if image_addr != "":
                 _log_id = db.execute("INSERT INTO logs (user_id, transaction_id, amount, notes, photopath, curr_date, curr_time) VALUES (:user_id, :transaction_id, :amount, :notes, :photopath, :curr_date, :curr_time)", \
                     user_id=session['user_id'], transaction_id = _transaction_id, amount=float(_amt), notes=_notes, photopath=image_addr, curr_date=_date, curr_time=_time)
@@ -249,7 +250,7 @@ def register():
                                       'confirm_email',
                                       token=token,
                                       _external=True)
-                html = render_template('confirmation.html',confirm_url=confirm_url)
+                html = render_template('confirmation.html', confirm_url=confirm_url)
                 _message = "Congratulations, {}!\n Your account has been registered successfully.\n Check your email for a confirmation link.".format(_username)
                 print(_message)
                 send_email(_email, subject, html)
@@ -289,8 +290,11 @@ def get_teas_by_user():
     print("REFRESHING TEA COLLECTION!")
     teas_by_user = db.execute("SELECT SUM(transactions.amount) as 'amount', user_id, name, brand, type, preparation FROM transactions WHERE user_id=:user_id GROUP BY user_id, name, brand, type, preparation", \
         user_id=session['user_id'])
-    print(teas_by_user)
-    return teas_by_user
+    teas_in_stock = []
+    for tea in teas_by_user:
+        if tea['amount'] > 0:
+            teas_in_stock.append(tea)
+    return teas_in_stock
 
 @login_required
 def get_tea_by_brand_and_name(_brand, _name):
