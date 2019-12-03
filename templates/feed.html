@@ -30,7 +30,7 @@
     {% for log in logs %}
         <div class="entry-box">
             <div id="journalyouenjoyed">
-            <td>{{ log['username'] }} enjoyed a cup of <b>{{ log['brand'] }} {{ log['name'] }}</b> at {{ log['curr_time'] }} on {{ log['curr_date'] }}.</td>
+		    <td><b>{{ log['username'] }}</b> enjoyed a cup of <b>{{ log['brand'] }} {{ log['name'] }}</b> at {{ log['curr_time'] }} on {{ log['curr_date'] }}.</td>
             </div>
         <table class="journal-entry">
             <tr>

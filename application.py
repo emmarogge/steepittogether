@@ -84,8 +84,8 @@ def confirm_email(token):
 @login_required
 def feed():
     """Show history of tea interactions"""
-    _logs = db.execute("SELECT * FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id<>:user_id", user_id=session['user_id'])
-    _notes = db.execute("SELECT logs.notes FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id<>:user_id", user_id=session['user_id'])
+    _logs = db.execute("SELECT users.username, transactions.curr_date, transactions.curr_time, transactions.brand, transactions.name, logs.photopath FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id JOIN users ON users.id = transactions.user_id")
+    _notes = db.execute("SELECT logs.notes FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id JOIN users ON users.id=transactions.user_id")
     note_list = [x['notes'] for x in _notes]
     for index, l in enumerate(_logs):
         l['note'] = note_list[index]
