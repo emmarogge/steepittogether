@@ -265,10 +265,7 @@ def register():
                 # Send confirmation email with secret link
                 subject = "Steep It Together account confirmation"
                 token = ts.dumps(_email, salt="email-confirmation-key")
-                confirm_url = url_for(
-                                      'confirm_email',
-                                      token=token,
-                                      _external=True)
+                confirm_url = "http://steepittogether.com/confirm/{}".format(token) 
                 html = render_template('confirmation.html', confirm_url=confirm_url)
                 _message = "Congratulations, {}!\n Your account has been registered successfully.\n Check your email for a confirmation link.".format(_username)
                 print(_message)
@@ -301,7 +298,8 @@ def reset():
         subject = "SteepItTogether: Password Reset Requested"
         token = ts.dumps(user['email'], salt='recover-password-key')
 
-        reset_url = url_for('reset_with_token', token=token, _external=True)
+        reset_url = "http://steepittogether.com/reset/{}".format(token)
+        #reset_url = url_for('reset_with_token', token=token, _external=True)
         print("reset_url: {}".format(reset_url))
 
         html = render_template('account-reset.html', reset_url=reset_url)
