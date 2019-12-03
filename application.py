@@ -64,6 +64,22 @@ def index():
     print("_items: {}".format(_items))
     return render_template("collection.html", items=_items)
 
+@app.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = ts.loads(token, salt="email-confirm-key", max_age=86400)
+    except:
+        return redirect(url_for("login"))
+
+    # Set user email confirmed in the database.
+    rows = db.execute("update users set email_confirmed=true where email=:email", email)
+
+    # Update session variables to store information about logged-in user.
+    session["user_id"] = rows[0]["id"]
+    session["email"] = rows[0]["email"]
+    session["username"] = rows[0]["username"]
+    return redirect(url_for('login'))
+
 @app.route("/input_tea", methods=["GET", "POST"])
 @login_required
 def input_tea():
@@ -105,6 +121,17 @@ def input_tea():
 
     else:
         return render_template("input_tea.html", message="")
+
+@app.route("/journal", methods=["GET"])
+@login_required
+def journal():
+    """Show history of tea interactions"""
+    _logs = db.execute("SELECT * FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id=:user_id", user_id=session['user_id'])
+    _notes = db.execute("SELECT logs.notes FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id=:user_id", user_id=session['user_id'])
+    note_list = [x['notes'] for x in _notes]
+    for index, l in enumerate(_logs):
+        l['note'] = note_list[index]
+    return render_template("journal.html", logs=_logs)
 
 @app.route("/log", methods=["GET", "POST"])
 @login_required
@@ -159,17 +186,6 @@ def log():
     else:
         return render_template("log.html", items=_items)
 
-@app.route("/journal", methods=["GET"])
-@login_required
-def journal():
-    """Show history of tea interactions"""
-    _logs = db.execute("SELECT * FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id=:user_id", user_id=session['user_id'])
-    _notes = db.execute("SELECT logs.notes FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id=:user_id", user_id=session['user_id'])
-    note_list = [x['notes'] for x in _notes]
-    for index, l in enumerate(_logs):
-        l['note'] = note_list[index]
-    return render_template("journal.html", logs=_logs)
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
@@ -218,14 +234,6 @@ def logout():
     # Redirect user to login form
     return redirect("/")
 
-
-@app.route("/reminder", methods=["GET", "POST"])
-@login_required
-def quote():
-    """Get reminders when you should refill your favorite teas."""
-    return coming_soon()
-
-
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
@@ -264,20 +272,41 @@ def register():
     else:
         return render_template("register.html")
 
-@app.route('/confirm/<token>')
-def confirm_email(token):
-    try:
-        email = ts.loads(token, salt="email-confirm-key", max_age=86400)
-    except:
-        return redirect(url_for("login"))
-    print("confirmed email")
-    rows = db.execute("update users set email_confirmed=true where email=:email", email)
+@app.route("/reminder", methods=["GET", "POST"])
+@login_required
+def quote():
+    """Get reminders when you should refill your favorite teas."""
+    return coming_soon()
 
-    session["user_id"] = rows[0]["id"]
-    session["email"] = rows[0]["email"]
-    session["username"] = rows[0]["username"]
+@app.route('/reset', methods=['GET','POST'])
+def reset():
+    if request.method == "POST":
+        user = db.execute("select * from users where email=:email", email=request.form.get("email"))[0]
 
-    return redirect(url_for('login'))
+        subject = "SteepItTogether: Password Reset Requested"
+        token = ts.dumps(user['email'], salt='recover-password-key')
+
+        reset_url = url_for('reset_with_token', token=token, _external=True)
+        print("reset_url: {}".format(reset_url))
+
+        html = render_template('account-reset.html', reset_url=reset_url)
+        send_email(user['email'], subject, html)
+
+        _message = "Success! Check your email for the link to reset your account password."
+        return render_template("success.html", message=_message)
+
+    else:
+        return render_template("reset.html")
+
+@app.route('/reset/<token>', methods=['GET', 'POST'])
+def reset_with_token(token):
+    if request.method == "POST":
+        _email = ts.loads(token, salt='recover-password-key')
+        db.execute("UPDATE users SET hash=:hash WHERE email=:email", hash=generate_password_hash(request.form.get("password")), email=_email)
+        _message = "Congratulations! You've reset your password."
+        return render_template("success.html", message=_message)
+    else:
+        return render_template("reset_with_token.html", token=token)
 
 @app.route("/utilities", methods=["GET", "POST"])
 @login_required
@@ -319,7 +348,7 @@ def send_email(email, subject, html_message):
     s.login(sender_email, sender_pw)
 
     s.sendmail(sender_email, dest_email, msg.as_string())
-    print("send email")
+    print("EMAIL SENT\n")
     s.quit()
 
 def get_random_bun():

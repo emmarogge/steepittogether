@@ -28,6 +28,20 @@ input {
     margin-right: auto;
     text-align: center;
 }
+
+.reset-link {
+    font-family: "Amatic SC";
+    font-size: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: white;
+    width: 25%;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    margin-top: 0.4rem;
+}
 </style>
 {% extends "layout.html" %}
 
@@ -46,6 +60,9 @@ input {
         </div>
         <div id="login-button">
             <button class="btn btn-primary" id="log-in-button" type="submit">Log In</button>
+        </div>
+        <div id="reset-link-div">
+            <a class="reset-link" id="reset" href="/reset">Forgot your password?</a>
         </div>
     </form>
 {% endblock %}
