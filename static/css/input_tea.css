@@ -9,7 +9,20 @@
     margin: 5px;
 
 }
-
+div.message {
+    background-color: #b6b9ad;
+    color: white;
+    font-family: "amatic sc";
+    font-size: 150%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 0.5rem; 
+    width: 50%;
+    margin-bottom: 0.5rem;
+}
 
 .form-group {
     background-color: #b6b9ad; 
