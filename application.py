@@ -80,6 +80,17 @@ def confirm_email(token):
     session["username"] = rows[0]["username"]
     return redirect(url_for('login'))
 
+@app.route("/feed", methods=["GET"])
+@login_required
+def feed():
+    """Show history of tea interactions"""
+    _logs = db.execute("SELECT * FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id<>:user_id", user_id=session['user_id'])
+    _notes = db.execute("SELECT logs.notes FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id<>:user_id", user_id=session['user_id'])
+    note_list = [x['notes'] for x in _notes]
+    for index, l in enumerate(_logs):
+        l['note'] = note_list[index]
+    return render_template("feed.html", logs=_logs)
+
 @app.route("/input_tea", methods=["GET", "POST"])
 @login_required
 def input_tea():
@@ -272,11 +283,15 @@ def register():
     else:
         return render_template("register.html")
 
-@app.route("/reminder", methods=["GET", "POST"])
-@login_required
-def quote():
-    """Get reminders when you should refill your favorite teas."""
-    return coming_soon()
+# @app.route("/reminder", methods=["GET", "POST"])
+# @login_required
+# def reminder():
+#     """Get reminders when you should refill your favorite teas."""
+#     _items = get_teas_by_user();
+#     if request.method == "POST":
+
+#     else:
+#         return render_template("reminder.html", items=_items)
 
 @app.route('/reset', methods=['GET','POST'])
 def reset():

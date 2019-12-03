@@ -1,0 +1,49 @@
+<html lang="en">
+<link href="/static/css/journal.css" rel="stylesheet">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Amatic SC">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
+<script language="javascript">
+    $(document).ready(function () {
+        console.log("Applying getValues() to document\n");
+        getValues();
+        });
+        function getValues() {
+                var rows = document.querySelectorAll(".table#row");
+                console.log(rows);
+                rows.forEach(function (currentRow) {
+                    var notes = currentRow.querySelector(".notes");
+                    console.log("Notes: " + notes);
+                })
+        }
+</script>
+
+{% extends "layout.html" %}
+{% block title %}
+    Spilling the Tea
+{% endblock %}
+
+{% block main %}
+    {% for log in logs %}
+        <div class="entry-box">
+            <div id="journalyouenjoyed">
+            <td>{{ log['username'] }} enjoyed a cup of <b>{{ log['brand'] }} {{ log['name'] }}</b> at {{ log['curr_time'] }} on {{ log['curr_date'] }}.</td>
+            </div>
+        <table class="journal-entry">
+            <tr>
+                <div class="polaroid-image">
+                <img class="journal-photo" src="{{ log['photopath'] }}"/>
+                </div>
+            </tr>
+            <th class="journal-label">Notes:</th>
+            <tr class="journal-notes">
+                <td class="notes">{{ log['note']}} </td>
+            </tr>
+        </table>
+        </div>
+    {% endfor %}
+{% endblock %}
+</html>
