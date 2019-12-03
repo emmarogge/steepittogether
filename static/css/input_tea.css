@@ -1,15 +1,55 @@
+#addteaheader {
+
+	font-family: "dawning of a new day";
+	font-weight: bolder;
+	font-size: 300%;
+	text-align: center;
+}
+
 .form-group {
-    background: rgba(144, 153, 162, .90);
+    background-color: #c7c7d7; 
+    opacity: 0.93;
     padding: 20px;
     margin-left: auto;
     margin-right: auto;
-    border-radius: 25px;
+    border-radius: 5px;
     text-align: center;
-
+    font-family: "amatic sc";
+    font-size: 150%;
+    letter-spacing: 1px;
 }
 
 #button{
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+
+}
+
+#submitaddtea {
+
+	font-family: "amatic sc";
+	font-weight: bold;
+	font-size: 150%;
+	letter-spacing: 1px;
+	background-color: #b6b9ad;
+	border-color: #b6b9ad;
+
+}
+
+#submitaddtea:hover {
+
+    background-color: #a5a89a;
+    border-color: #a5a89a;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+
+}
+
+#submitaddtea:active {
+
+    background-color: #a5a89a;
+    border-color: #a5a89a;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+    
 }
