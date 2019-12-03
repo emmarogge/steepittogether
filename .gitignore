@@ -1,5 +1,6 @@
 # Ignore changes to database #
 *.db
+teatime.db
 
 # Scripts for tunneling #
 script*

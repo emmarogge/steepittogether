@@ -1,0 +1,23 @@
+<html lang="en">
+<link href="/static/css/log.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Amatic SC">
+{% extends "layout.html" %}
+{% block title %}
+    Reset Password
+{% endblock %}
+
+{% block main %}
+    <form action="/reset" method="post">
+        <div class="form-group">
+            <input class="form-control" name="email" placeholder="Email" type="email">
+        </div>
+        <div id="reset-button">
+            <button class="btn btn-primary" id="reset-button" type="submit">Reset My Password</button>
+        </div>
+    </form>
+{% endblock %}  
+</html>

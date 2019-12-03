@@ -1,11 +1,28 @@
 {% extends "layout.html" %}
-
+<html lang="en">
+<link href="/static/css/journal.css" rel="stylesheet">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Amatic SC">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
+<style>
+	#message-div {
+		background-color: #8a8aac;
+	    margin: 3rem;
+	    padding: 1rem;
+	    border-radius: 10px;
+	    font-family: "Amatic SC";
+	    font-size: 200%;
+	}
+</style>
 {% block title %}
     Success!
 {% endblock %}
 
 {% block main %}
-    <div>
+    <div id="message-div">
        {{ message }}
     </div>
 {% endblock %}

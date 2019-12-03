@@ -7,14 +7,14 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Confirmation
+    Reset Password
 {% endblock %}
 
 {% block main %}
 <p style="font-family: 'amatic sc';">
-Your account was successfully created. Please click the link below<br>
-to confirm your email address and activate your account:
-<a href="{{ confirm_url }}">{{ confirm_url }}</a>
+You have requested a password reset for your account.
+<br> Please click the link below tonreset your password:
+<a href="{{ reset_url }}">{{ reset_url }}</a>
 </p>  
 
 <p>

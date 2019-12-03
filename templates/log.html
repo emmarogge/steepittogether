@@ -23,9 +23,7 @@ $(document).ready(function () {
 {% endblock %}
 
 {% block main %}
-    <div id="logteaheader">
-    <h8>Log a tea into your journal</h8>
-    </div>
+    <h8 id="logteaheader">Log a tea into your journal</h8>
     <form action="{{ url_for('log') }}" method="post" enctype=multipart/form-data id="log-form" class="form-horizontal">
         <div class="form-group-md">
           <div id="choosetealog" class="input-select">
