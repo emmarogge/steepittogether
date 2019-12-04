@@ -104,18 +104,15 @@ def input_tea():
         _type = request.form.get("type")
         _price = request.form.get("price")
         _location = request.form.get("location")
-        _notes = "" #TODO: Allow user to input notes!
 
         # Get current date and time
         now = datetime.now()
         _time = datetime.strftime(now, "%I:%M %p")
         _date = datetime.strftime(now, "%m/%d/%Y")
-        print("date: {} time {} \n".format(_date, _time))
 
+        # Insert transaction information into database
         transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount, price, location, curr_date, curr_time) VALUES (:user_id, :name, :brand, :type, :preparation, :amount, :price, :location, :curr_date, :curr_time)", \
             user_id=session["user_id"], name=_name, brand=_brand, type=_type, preparation=_preparation, amount=_amount, price=_price, location=_location, curr_date=_date, curr_time=_time);
-
-        print("Transaction: {} \n".format(transaction_id))
 
         if ((_preparation == "Loose Leaf") or (_preparation == "Matcha Powder")):
             unit = "ounce(s) of"
@@ -182,7 +179,7 @@ def log():
             # Update db to reflect tea consumption.
             _transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount, curr_date, curr_time) VALUES (:user_id, :name, :brand, :type, :preparation, :amount, :curr_date, :curr_time)",
                 user_id=session['user_id'], name=_name, brand=_brand, type=info['type'], amount=-float(_amt), preparation=info['preparation'], curr_date=_date, curr_time=_time)
-            print("USED {} amount of tea!".format(float(_amt)))
+
             if image_addr != "":
                 _log_id = db.execute("INSERT INTO logs (user_id, transaction_id, amount, notes, photopath, curr_date, curr_time) VALUES (:user_id, :transaction_id, :amount, :notes, :photopath, :curr_date, :curr_time)", \
                     user_id=session['user_id'], transaction_id = _transaction_id, amount=float(_amt), notes=_notes, photopath=image_addr, curr_date=_date, curr_time=_time)
@@ -323,7 +320,6 @@ def utilities():
 
 @login_required
 def get_teas_by_user():
-    print("REFRESHING TEA COLLECTION!")
     teas_by_user = db.execute("SELECT SUM(transactions.amount) as 'amount', user_id, name, brand, type, preparation FROM transactions WHERE user_id=:user_id GROUP BY user_id, name, brand, type, preparation", \
         user_id=session['user_id'])
     teas_in_stock = []
@@ -334,14 +330,13 @@ def get_teas_by_user():
 
 @login_required
 def get_tea_by_brand_and_name(_brand, _name):
-    print("Getting {} {} from TEA COLLECTION!")
     teas_by_user = db.execute("SELECT * FROM (SELECT SUM(transactions.amount) as 'amount', user_id, name, brand, type, preparation FROM transactions WHERE user_id=:user_id GROUP BY user_id, name, brand, type, preparation) WHERE brand=:brand AND name=:name", \
         user_id=session['user_id'], brand=_brand, name=_name)
     return teas_by_user
 
 def send_email(email, subject, html_message):
-    sender_email = "steepittogether@gmail.com"
-    sender_pw = r"ilovetea"
+    sender_email = app.config['EMAIL_ADDRESS']
+    sender_pw = escape(app.config['EMAIL_PASSWORD'])
     dest_email = email
 
     msg = MIMEMultipart('alternative')
