@@ -1,0 +1,33 @@
+.form-group {
+
+	font-family: "amatic sc";
+	font-weight: bolder;
+	letter-spacing: 2px;
+	font-size: 150%;
+}
+
+button.btn.btn-primary {
+
+
+	font-family: "amatic sc";
+	font-weight: bolder;
+	letter-spacing: 2px;
+	font-size: 115%;
+
+}
+
+.btn.btn-primary:hover {
+
+    background-color: #5c5b61;
+    border-color: #5c5b61;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+
+}
+
+.btn.btn-primary:active {
+
+    background-color: #5c5b61;
+    border-color: #5c5b61;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
