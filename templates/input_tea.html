@@ -28,6 +28,16 @@
         }
     }
 </script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var msg = document.getElementById("message");
+        if (msg.text == '') {
+            msg.style.display = "none";
+        } else {
+            msg.style.display = "block";
+        }
+    })
+</script>
 {% extends "layout.html" %}
 {% block title %} Add new teas to your collection. {% endblock %}
 {% block main %}

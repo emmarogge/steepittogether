@@ -4,9 +4,8 @@
 href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
 <link rel="stylesheet"
 href="https://fonts.googleapis.com/css?family=Amatic SC">
-
 <style>
-	.message{
+	#message{
 		font-family: 'amatic sc';
 		font-size: 200%;
 		color: white;
@@ -17,7 +16,7 @@ href="https://fonts.googleapis.com/css?family=Amatic SC">
     	font-size: 350% !important;
     	color: white;
 	}
-	#purplebox
+	#box
 	{
 		background-color: #788260;
 		padding: 15%;
@@ -32,18 +31,18 @@ href="https://fonts.googleapis.com/css?family=Amatic SC">
     <title>Steep It Together: Confirm your account!</title>
 </head>
 
-<div id="purplebox">
+<div id="box">
 <h1 id="title">
 	Steep It Together!
 </h1>
 
 <body>
 	<p class="message">You have requested a password reset for your account.
-	<br> Please click the link below tonreset your password:
+	<br> Please click the link below to reset your password:
 	<a href="{{ reset_url }}">{{ reset_url }}</a>
 </p>  
 
-<p class="message">
+<p id="message">
 --<br>
 Questions? Comments? Email steepittogether@gmail.com.
 </p>
