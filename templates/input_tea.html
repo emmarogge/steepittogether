@@ -30,10 +30,13 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-        var msg = document.getElementById("message");
-        if (msg.text == '') {
+        var msg = document.getElementsByClassName("message")[0];
+        if (msg.innerText == "" || msg.innerText == null){
+            console.log("EMPTY STRING");
             msg.style.display = "none";
         } else {
+            console.log("NOT EMPTY");
+            console.log(msg.innerText);
             msg.style.display = "block";
         }
     })
