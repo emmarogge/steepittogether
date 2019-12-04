@@ -11,7 +11,7 @@ from flask import Flask, flash, jsonify, redirect, render_template, request, ses
 from flask_mail import Mail, Message
 from flask_session import Session
 from flask_wtf.file import FileField, FileRequired
-from helpers import apology, login_required, coming_soon
+from helpers import apology, escape, login_required, coming_soon
 from itsdangerous import URLSafeTimedSerializer
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
