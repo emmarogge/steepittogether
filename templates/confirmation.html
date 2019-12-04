@@ -1,26 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
+href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
 <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Amatic SC">
-{% extends "layout.html" %}
+href="https://fonts.googleapis.com/css?family=Amatic SC">
 
-{% block title %}
-    Confirmation
-{% endblock %}
+<style>
+	.message{
+		font-family: 'amatic sc';
+		font-size: 200%;
+		color: white;
+	}
+	#title{
+		font-family: "dawning of a new day";
+    	font-weight: bold;
+    	font-size: 350% !important;
+    	color: white;
+	}
+	#purplebox
+	{
+		background-color: #788260;
+		padding: 15%;
+		border-radius: 10%;
+	}
+	a
+	{
+		color: #c6c6d7;
+	}
+</style>
+<head>
+    <title>Steep It Together: Confirm your account!</title>
+</head>
 
-{% block main %}
-<p style="font-family: 'amatic sc';">
-Your account was successfully created. Please click the link below<br>
-to confirm your email address and activate your account:
-<a href="{{ confirm_url }}">{{ confirm_url }}</a>
-</p>  
+<div id="purplebox">
+<h1 id="title">
+	Welcome to Steep It Together!
+</h1>
 
-<p>
---<br>
-Questions? Comments? Email steepittogether@gmail.com.
-</p>
+<body>
+	<p class="message">
+	Your account was successfully created. Please click the link below<br>
+	to confirm your email address and activate your account:
+	<a href="{{ confirm_url }}">{{ confirm_url }}</a>
+	</p>  
 
-{% endblock %}
+	<p class="message">
+	--<br>
+	Questions? Comments? Email steepittogether@gmail.com.
+	</p>
+
+	</body>
+</div>
 </html>
+
