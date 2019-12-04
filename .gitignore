@@ -15,3 +15,7 @@ requirements.txt
 # OS generated files #
 .DS_Store
 nohup.out
+
+# Local configuration
+instance/*
+*config.py*
