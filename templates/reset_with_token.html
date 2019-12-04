@@ -33,7 +33,7 @@
 {% endblock %}
 
 {% block main %}
-    <form action="{{ url_for('reset_with_token', token=token) }}    " method="post">
+    <form action="{{ url_for('reset_with_token', token=token) }}" method="post">
         <label id="reset-label">Provide a new password to reset your account.</label>
         <div class="form-group">
             <input class="form-control" name="password" placeholder="Password" type="password">

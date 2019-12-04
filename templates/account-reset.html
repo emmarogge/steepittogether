@@ -1,26 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
+href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
 <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Amatic SC">
-{% extends "layout.html" %}
+href="https://fonts.googleapis.com/css?family=Amatic SC">
+<style>
+	#message{
+		font-family: 'amatic sc';
+		font-size: 200%;
+		color: white;
+	}
+	#title{
+		font-family: "dawning of a new day";
+    	font-weight: bold;
+    	font-size: 350% !important;
+    	color: white;
+	}
+	#box
+	{
+		background-color: #788260;
+		padding: 15%;
+		border-radius: 10%;
+	}
+	a
+	{
+		color: #c6c6d7;
+	}
+</style>
+<head>
+    <title>Steep It Together: Confirm your account!</title>
+</head>
 
-{% block title %}
-    Reset Password
-{% endblock %}
+<div id="box">
+<h1 id="title">
+	Steep It Together!
+</h1>
 
-{% block main %}
-<p style="font-family: 'amatic sc';">
-You have requested a password reset for your account.
-<br> Please click the link below tonreset your password:
-<a href="{{ reset_url }}">{{ reset_url }}</a>
+<body>
+	<p class="message">You have requested a password reset for your account.
+	<br> Please click the link below to reset your password:
+	<a href="{{ reset_url }}">{{ reset_url }}</a>
 </p>  
 
-<p>
+<p id="message">
 --<br>
 Questions? Comments? Email steepittogether@gmail.com.
 </p>
 
-{% endblock %}
+	</body>
+</div>
 </html>
