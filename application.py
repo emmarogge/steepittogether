@@ -11,7 +11,7 @@ from flask import Flask, flash, jsonify, redirect, render_template, request, ses
 from flask_mail import Mail, Message
 from flask_session import Session
 from flask_wtf.file import FileField, FileRequired
-from helpers import apology, login_required, coming_soon
+from helpers import apology, escape, login_required, coming_soon
 from itsdangerous import URLSafeTimedSerializer
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
@@ -104,18 +104,15 @@ def input_tea():
         _type = request.form.get("type")
         _price = request.form.get("price")
         _location = request.form.get("location")
-        _notes = "" #TODO: Allow user to input notes!
 
         # Get current date and time
         now = datetime.now()
         _time = datetime.strftime(now, "%I:%M %p")
         _date = datetime.strftime(now, "%m/%d/%Y")
-        print("date: {} time {} \n".format(_date, _time))
 
+        # Insert transaction information into database
         transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount, price, location, curr_date, curr_time) VALUES (:user_id, :name, :brand, :type, :preparation, :amount, :price, :location, :curr_date, :curr_time)", \
             user_id=session["user_id"], name=_name, brand=_brand, type=_type, preparation=_preparation, amount=_amount, price=_price, location=_location, curr_date=_date, curr_time=_time);
-
-        print("Transaction: {} \n".format(transaction_id))
 
         if ((_preparation == "Loose Leaf") or (_preparation == "Matcha Powder")):
             unit = "ounce(s) of"
@@ -182,7 +179,7 @@ def log():
             # Update db to reflect tea consumption.
             _transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount, curr_date, curr_time) VALUES (:user_id, :name, :brand, :type, :preparation, :amount, :curr_date, :curr_time)",
                 user_id=session['user_id'], name=_name, brand=_brand, type=info['type'], amount=-float(_amt), preparation=info['preparation'], curr_date=_date, curr_time=_time)
-            print("USED {} amount of tea!".format(float(_amt)))
+
             if image_addr != "":
                 _log_id = db.execute("INSERT INTO logs (user_id, transaction_id, amount, notes, photopath, curr_date, curr_time) VALUES (:user_id, :transaction_id, :amount, :notes, :photopath, :curr_date, :curr_time)", \
                     user_id=session['user_id'], transaction_id = _transaction_id, amount=float(_amt), notes=_notes, photopath=image_addr, curr_date=_date, curr_time=_time)
@@ -265,7 +262,7 @@ def register():
                 # Send confirmation email with secret link
                 subject = "Steep It Together account confirmation"
                 token = ts.dumps(_email, salt="email-confirmation-key")
-                confirm_url = "http://steepittogether.com/confirm/{}".format(token) 
+                confirm_url = "http://steepittogether.com/confirm/{}".format(token)
                 html = render_template('confirmation.html', confirm_url=confirm_url)
                 _message = "Congratulations, {}!\n Your account has been registered successfully.\n Check your email for a confirmation link.".format(_username)
                 print(_message)
@@ -280,33 +277,27 @@ def register():
     else:
         return render_template("register.html")
 
-# @app.route("/reminder", methods=["GET", "POST"])
-# @login_required
-# def reminder():
-#     """Get reminders when you should refill your favorite teas."""
-#     _items = get_teas_by_user();
-#     if request.method == "POST":
-
-#     else:
-#         return render_template("reminder.html", items=_items)
-
 @app.route('/reset', methods=['GET','POST'])
 def reset():
     if request.method == "POST":
-        user = db.execute("select * from users where email=:email", email=request.form.get("email"))[0]
+        users = db.execute("select * from users where email=:email", email=request.form.get("email"))
+        print("LEN OF USERS: {}".format(len(users)))
+        _message = "No account matching that email address exists.\n Please try again."
+        if len(users) == 0:
+            return render_template("reset.html", message=_message)
+        else:
+            user = users[0]
+            subject = "SteepItTogether: Password Reset Requested"
+            token = ts.dumps(user['email'], salt='recover-password-key')
 
-        subject = "SteepItTogether: Password Reset Requested"
-        token = ts.dumps(user['email'], salt='recover-password-key')
+            reset_url = "http://steepittogether.com/reset/{}".format(token)
+            print("reset_url: {}".format(reset_url))
 
-        reset_url = "http://steepittogether.com/reset/{}".format(token)
-        #reset_url = url_for('reset_with_token', token=token, _external=True)
-        print("reset_url: {}".format(reset_url))
+            html = render_template('account-reset.html', reset_url=reset_url)
+            send_email(user['email'], subject, html)
 
-        html = render_template('account-reset.html', reset_url=reset_url)
-        send_email(user['email'], subject, html)
-
-        _message = "Success! Check your email for the link to reset your account password."
-        return render_template("success.html", message=_message)
+            _message = "Success! Check your email for the link to reset your account password."
+            return render_template("success.html", message=_message)
 
     else:
         return render_template("reset.html")
@@ -329,7 +320,6 @@ def utilities():
 
 @login_required
 def get_teas_by_user():
-    print("REFRESHING TEA COLLECTION!")
     teas_by_user = db.execute("SELECT SUM(transactions.amount) as 'amount', user_id, name, brand, type, preparation FROM transactions WHERE user_id=:user_id GROUP BY user_id, name, brand, type, preparation", \
         user_id=session['user_id'])
     teas_in_stock = []
@@ -340,14 +330,13 @@ def get_teas_by_user():
 
 @login_required
 def get_tea_by_brand_and_name(_brand, _name):
-    print("Getting {} {} from TEA COLLECTION!")
     teas_by_user = db.execute("SELECT * FROM (SELECT SUM(transactions.amount) as 'amount', user_id, name, brand, type, preparation FROM transactions WHERE user_id=:user_id GROUP BY user_id, name, brand, type, preparation) WHERE brand=:brand AND name=:name", \
         user_id=session['user_id'], brand=_brand, name=_name)
     return teas_by_user
 
 def send_email(email, subject, html_message):
-    sender_email = "steepittogether@gmail.com"
-    sender_pw = r"ilovetea"
+    sender_email = app.config['EMAIL_ADDRESS']
+    sender_pw = escape(app.config['EMAIL_PASSWORD'])
     dest_email = email
 
     msg = MIMEMultipart('alternative')
@@ -365,7 +354,7 @@ def send_email(email, subject, html_message):
     s.quit()
 
 def get_random_bun():
-    x = random.randint(6,22)
+    x = random.randint(6,23)
     return "buns_in_teacups/bun_in_teacup_{}.jpg".format(x)
 
 def errorhandler(e):
