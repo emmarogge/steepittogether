@@ -1,0 +1,10 @@
+.message-text {
+
+    display: block;
+    text-align: center;
+    background: lavender;
+    padding: 5%;
+    border-radius: 15px;
+    font-family: "amatic sc";
+    font-size: 200%;
+}

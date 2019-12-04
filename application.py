@@ -265,7 +265,7 @@ def register():
                 # Send confirmation email with secret link
                 subject = "Steep It Together account confirmation"
                 token = ts.dumps(_email, salt="email-confirmation-key")
-                confirm_url = "http://steepittogether.com/confirm/{}".format(token) 
+                confirm_url = "http://steepittogether.com/confirm/{}".format(token)
                 html = render_template('confirmation.html', confirm_url=confirm_url)
                 _message = "Congratulations, {}!\n Your account has been registered successfully.\n Check your email for a confirmation link.".format(_username)
                 print(_message)
