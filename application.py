@@ -280,33 +280,27 @@ def register():
     else:
         return render_template("register.html")
 
-# @app.route("/reminder", methods=["GET", "POST"])
-# @login_required
-# def reminder():
-#     """Get reminders when you should refill your favorite teas."""
-#     _items = get_teas_by_user();
-#     if request.method == "POST":
-
-#     else:
-#         return render_template("reminder.html", items=_items)
-
 @app.route('/reset', methods=['GET','POST'])
 def reset():
     if request.method == "POST":
-        user = db.execute("select * from users where email=:email", email=request.form.get("email"))[0]
+        users = db.execute("select * from users where email=:email", email=request.form.get("email"))
+        print("LEN OF USERS: {}".format(len(users)))
+        _message = "No account matching that email address exists.\n Please try again."
+        if len(users) == 0:
+            return render_template("reset.html", message=_message)
+        else:
+            user = users[0]
+            subject = "SteepItTogether: Password Reset Requested"
+            token = ts.dumps(user['email'], salt='recover-password-key')
 
-        subject = "SteepItTogether: Password Reset Requested"
-        token = ts.dumps(user['email'], salt='recover-password-key')
+            reset_url = "http://steepittogether.com/reset/{}".format(token)
+            print("reset_url: {}".format(reset_url))
 
-        reset_url = "http://steepittogether.com/reset/{}".format(token)
-        #reset_url = url_for('reset_with_token', token=token, _external=True)
-        print("reset_url: {}".format(reset_url))
+            html = render_template('account-reset.html', reset_url=reset_url)
+            send_email(user['email'], subject, html)
 
-        html = render_template('account-reset.html', reset_url=reset_url)
-        send_email(user['email'], subject, html)
-
-        _message = "Success! Check your email for the link to reset your account password."
-        return render_template("success.html", message=_message)
+            _message = "Success! Check your email for the link to reset your account password."
+            return render_template("success.html", message=_message)
 
     else:
         return render_template("reset.html")
@@ -365,7 +359,7 @@ def send_email(email, subject, html_message):
     s.quit()
 
 def get_random_bun():
-    x = random.randint(6,22)
+    x = random.randint(6,23)
     return "buns_in_teacups/bun_in_teacup_{}.jpg".format(x)
 
 def errorhandler(e):

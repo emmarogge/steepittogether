@@ -5,12 +5,40 @@
     href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
 <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Amatic SC">
+<script type="text/javascript">
+    $(document).ready(function () {
+        var msg = document.getElementById("message-text");
+        if (msg.innerText == "" || msg.innerText == null){
+            msg.style.display = "none";
+        } else {
+            msg.style.display = "block";
+        }
+    })
+</script>
+<style>
+    #message-text {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 5%;
+        text-align: center;
+        background: lavender;
+        padding: 2%;
+        border-radius: 15px;
+        font-family: "amatic sc";
+        font-size: 150%;
+        width: 50%;
+    }
+</style>
 {% extends "layout.html" %}
 {% block title %}
     Reset Password
 {% endblock %}
 
 {% block main %}
+    <div id="message-text">
+        {{ message }}
+    </div>
     <form action="/reset" method="post">
         <div class="form-group">
             <input class="form-control" name="email" placeholder="Email" type="email">
