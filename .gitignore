@@ -2,9 +2,6 @@
 *.db
 teatime.db
 
-# Scripts for tunneling #
-script*
-
 # Py trash #
 __pycache__
 requirements.txt
