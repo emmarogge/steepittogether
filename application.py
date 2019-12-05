@@ -354,7 +354,7 @@ def send_email(email, subject, html_message):
     s.quit()
 
 def get_random_bun():
-    x = random.randint(1,21)
+    x = random.randint(1,30)
     return "buns_in_teacups/bun_in_teacup_{}.jpg".format(x)
 
 def errorhandler(e):
