@@ -5,7 +5,20 @@
     href="https://fonts.googleapis.com/css?family=Dawning of a New Day">
 <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Amatic SC">
-
+<script type="text/javascript">
+        function getDate() {
+            var now = moment();
+            var mDate = moment(now).format('M/D/YYYY');
+            console.log("mDate: " + mDate);
+            return mDate;
+        }; 
+        function getTime() {
+            var now = moment();
+            var mTime = moment(now).format('h:mm a');
+            console.log("mTime: " + mTime);
+            return mTime;
+        }
+</script>
 <script language="javascript">
 $(document).ready(function () {
     $(".select").onchange = function () {
@@ -17,16 +30,29 @@ $(document).ready(function () {
     });
 })
 </script>
+<script language="javascript">
+    $(document).ready(function() {
+        var date = getDate();
+        var time = getTime();
+        document.getElementsByName("moment-date-formatted")[0].value = getDate();
+        document.getElementsByName("moment-time-formatted")[0].value = getTime();
+        console.log("date: " + document.getElementsByName("moment-date-formatted")[0].value);
+        console.log("time: " + document.getElementsByName("moment-date-formatted")[0].value);
+    })
+</script>
 {% extends "layout.html" %}
 {% block title %}
     Tea Drinking Log
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
 {% endblock %}
-
 {% block main %}
 <div id="logteaheader">
     <h8>Log a tea into your journal...</h8>
 </div>
     <form action="{{ url_for('log') }}" method="post" enctype=multipart/form-data id="log-form" class="form-horizontal">
+        <input type="hidden" name="moment-date-formatted" value="">
+        <input type="hidden" name="moment-time-formatted" value="">
         <div class="form-group-md">
           <div id="choosetealog" class="input-select">
               <select class="tea form-control" name="tea-select" required="required">

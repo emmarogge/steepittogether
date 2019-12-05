@@ -1,3 +1,7 @@
+#moment-date-formatted, #moment-time-formatted {
+    display: none;
+}
+
 #logteaheader {
 
     font-family: "dawning of a new day";

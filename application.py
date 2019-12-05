@@ -5,11 +5,12 @@ import random
 import smtplib
 
 from cs50 import SQL
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
 from flask_mail import Mail, Message
+from flask_moment import Moment
 from flask_session import Session
 from flask_wtf.file import FileField, FileRequired
 from helpers import apology, escape, login_required, coming_soon
@@ -51,8 +52,11 @@ app.config["SESSION_TYPE"] = "filesystem"
 ts = URLSafeTimedSerializer(app.config["SECRET_KEY"])
 Session(app)
 
-# Set up mail instance
+# Configure flask_mail instance
 mail = Mail(app)
+
+# Configure flask_moment instance
+moment = Moment(app)
 
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///teatime.db")
@@ -107,10 +111,9 @@ def input_tea():
         _location = request.form.get("location")
 
         # Get current date and time
-        # now = utc_to_local(datetime.now())
-        # _time = datetime.strftime(now, "%I:%M %p")
-        # _date = datetime.strftime(now, "%m/%d/%Y")
-        _time, _date = get_date_time()
+        _date = request.values.get("moment-date-formatted")
+        _time = request.values.get("moment-time-formatted")
+        print("date: {} time: {}".format(_date, _time))
 
         # Insert transaction information into database
         transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount, price, location, curr_date, curr_time) VALUES (:user_id, :name, :brand, :type, :preparation, :amount, :price, :location, :curr_date, :curr_time)", \
@@ -159,11 +162,10 @@ def log():
         info = get_tea_by_brand_and_name(_brand, _name)[0]
 
         # Get current date and time
-        # now = utc_to_local(datetime.now())
-        # _time = datetime.strftime(now, "%I:%M %p")
-        # _date = datetime.strftime(now, "%m/%d/%Y")
-        # print("date: {} time {} \n".format(_date, _time))
-        _time, _date = get_date_time()
+        _date = request.values.get("moment-date-formatted")
+        _time = request.values.get("moment-time-formatted")
+        print("date: {} time: {}".format(_date, _time))
+
         # Handle photo upload
         if "photo" in request.files:
             image = request.files["photo"]
