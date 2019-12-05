@@ -1,10 +1,11 @@
 import datetime
 import os
+import pytz
 import random
 import smtplib
 
 from cs50 import SQL
-from datetime import datetime
+from datetime import datetime, timezone
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
@@ -84,8 +85,8 @@ def confirm_email(token):
 @login_required
 def feed():
     """Show history of tea interactions"""
-    _logs = db.execute("SELECT users.username, transactions.curr_date, transactions.curr_time, transactions.brand, transactions.name, logs.photopath FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id JOIN users ON users.id = transactions.user_id")
-    _notes = db.execute("SELECT logs.notes FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id JOIN users ON users.id=transactions.user_id")
+    _logs = db.execute("SELECT users.username, transactions.curr_date, transactions.curr_time, transactions.brand, transactions.name, logs.photopath FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id JOIN users ON users.id = transactions.user_id ORDER BY transactions.curr_date DESC, transactions.curr_time DESC")
+    _notes = db.execute("SELECT logs.notes FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id JOIN users ON users.id=transactions.user_id ORDER BY transactions.curr_date DESC, transactions.curr_time DESC")
     note_list = [x['notes'] for x in _notes]
     for index, l in enumerate(_logs):
         l['note'] = note_list[index]
@@ -106,9 +107,10 @@ def input_tea():
         _location = request.form.get("location")
 
         # Get current date and time
-        now = datetime.now()
-        _time = datetime.strftime(now, "%I:%M %p")
-        _date = datetime.strftime(now, "%m/%d/%Y")
+        # now = utc_to_local(datetime.now())
+        # _time = datetime.strftime(now, "%I:%M %p")
+        # _date = datetime.strftime(now, "%m/%d/%Y")
+        _time, _date = get_date_time()
 
         # Insert transaction information into database
         transaction_id = db.execute("INSERT INTO transactions (user_id, name, brand, type, preparation, amount, price, location, curr_date, curr_time) VALUES (:user_id, :name, :brand, :type, :preparation, :amount, :price, :location, :curr_date, :curr_time)", \
@@ -134,8 +136,8 @@ def input_tea():
 @login_required
 def journal():
     """Show history of tea interactions"""
-    _logs = db.execute("SELECT * FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id=:user_id", user_id=session['user_id'])
-    _notes = db.execute("SELECT logs.notes FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id=:user_id", user_id=session['user_id'])
+    _logs = db.execute("SELECT * FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id=:user_id ORDER BY transactions.curr_date DESC, transactions.curr_time DESC", user_id=session['user_id'])
+    _notes = db.execute("SELECT logs.notes FROM logs JOIN transactions ON transactions.transaction_id = logs.transaction_id  WHERE logs.user_id=:user_id ORDER BY transactions.curr_date DESC, transactions.curr_time DESC", user_id=session['user_id'])
     note_list = [x['notes'] for x in _notes]
     for index, l in enumerate(_logs):
         l['note'] = note_list[index]
@@ -157,11 +159,11 @@ def log():
         info = get_tea_by_brand_and_name(_brand, _name)[0]
 
         # Get current date and time
-        now = datetime.now()
-        _time = datetime.strftime(now, "%I:%M %p")
-        _date = datetime.strftime(now, "%m/%d/%Y")
-        print("date: {} time {} \n".format(_date, _time))
-
+        # now = utc_to_local(datetime.now())
+        # _time = datetime.strftime(now, "%I:%M %p")
+        # _date = datetime.strftime(now, "%m/%d/%Y")
+        # print("date: {} time {} \n".format(_date, _time))
+        _time, _date = get_date_time()
         # Handle photo upload
         if "photo" in request.files:
             image = request.files["photo"]
@@ -333,6 +335,15 @@ def get_tea_by_brand_and_name(_brand, _name):
     teas_by_user = db.execute("SELECT * FROM (SELECT SUM(transactions.amount) as 'amount', user_id, name, brand, type, preparation FROM transactions WHERE user_id=:user_id GROUP BY user_id, name, brand, type, preparation) WHERE brand=:brand AND name=:name", \
         user_id=session['user_id'], brand=_brand, name=_name)
     return teas_by_user
+
+def get_date_time():
+    d = datetime.now()
+    timezone = pytz.timezone("America/New_York")
+    d_local = timezone.localize(d)
+    _time = datetime.strftime(d_local, "%I:%M %p")
+    _date = datetime.strftime(d_local, "%m/%d/%Y")
+    print("time: {} date: {}".format(_time, _date))
+    return _time, _date
 
 def send_email(email, subject, html_message):
     sender_email = app.config['EMAIL_ADDRESS']
